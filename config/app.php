@@ -172,7 +172,7 @@ return [
          * Application Service Providers...
          */
         App\Application\Providers\AppServiceProvider::class,
-        #App\Application\Providers\AuthServiceProvider::class,
+        App\Application\Providers\AuthServiceProvider::class,
 		App\Interfaces\Web\Http\Providers\UserServiceProvider::class,
         // App\Application\Providers\BroadcastServiceProvider::class,
         App\Application\Providers\EventServiceProvider::class,
