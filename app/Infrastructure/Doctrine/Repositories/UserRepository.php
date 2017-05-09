@@ -1,5 +1,5 @@
 <?php
-namespace App\Infrastructure\Doctrine\Mappings\Repositories;
+namespace App\Infrastructure\Doctrine\Repositories;
 
 use App\Domain\User\Entities\User;
 use Doctrine\ORM\EntityManager;

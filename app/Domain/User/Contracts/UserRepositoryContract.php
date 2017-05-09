@@ -51,10 +51,10 @@ interface UserRepositoryContract{
 	public function findAll();
 
 	/**
+	 * @param User $user
 	 * @return mixed
 	 */
-	public function toArray(Manager $manager);
-
+	public function toArray(User $user);
 
 	/**
 	 * @param $email
