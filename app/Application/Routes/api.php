@@ -18,20 +18,21 @@ use Illuminate\Http\Request;
 //});
 
 
-$app->get('/', ['as' => 'profile', function () {
-	echo "Hello World!";
-}]);
-$app->group(
-	['prefix'=>'api/v1'],
-	function ($app) {
-		//auth
-		$app->post('auth/login', [
-			'middleware' => ['throttle:30:5','cors'],
-			'uses' => 'UserController@login',
-		]);
-		//protected routes
-		$app->group(['middleware' => ['jwt','throttle:30:5','cors']],function ($app){
-			//manager
-			require_once 'manager.php';
-		});
-	});
+Route::post('users/create', ['uses' => 'UserController@create', 'as' => 'create.users']);
+Route::post('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
+Route::post('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
+
+//$app->group(
+//	['prefix'=>'api/v1'],
+//	function ($app) {
+//		//auth
+//		$app->post('auth/login', [
+//			'middleware' => ['throttle:30:5','cors'],
+//			'uses' => 'UserController@login',
+//		]);
+//		//protected routes
+//		$app->group(['middleware' => ['jwt','throttle:30:5','cors']],function ($app){
+//			//manager
+//			require_once 'manager.php';
+//		});
+//	});
