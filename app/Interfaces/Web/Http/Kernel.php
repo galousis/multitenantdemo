@@ -2,6 +2,7 @@
 
 namespace App\Interfaces\Web\Http;
 
+use GrahamCampbell\Throttle\Http\Middleware\ThrottleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -55,6 +56,9 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Interfaces\Web\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        //'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+		'jwt' => \App\Interfaces\Api\Http\Middleware\JWTMiddleware::class,
+		'cors' => \App\Interfaces\Api\Http\Middleware\CORSMiddleware::class,
+		'throttle' =>  ThrottleMiddleware::class,
     ];
 }
