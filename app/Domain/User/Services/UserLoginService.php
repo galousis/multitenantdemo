@@ -5,7 +5,7 @@ use App\Domain\User\Contracts\UserLoginServiceContract;
 use App\Domain\User\Contracts\UserRepositoryContract;
 use App\Application\Exceptions\JWTException; 			#Call a exception from Domain...
 use Firebase\JWT\JWT;  									#Infrastructure dependency
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserLoginService
@@ -48,8 +48,7 @@ class UserLoginService implements UserLoginServiceContract
 
 		$encrypted = $manager->getPassword();
 
-		// password_verify($password, $manager->getPassword())
-		if ( $password == Crypt::decrypt($encrypted)) {
+		if (Hash::check($password, $encrypted)) {
 
 			//$tokenId    = base64_encode(mcrypt_create_iv(32));
 			$issuedAt   = time();
