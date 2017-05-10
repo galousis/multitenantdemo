@@ -180,7 +180,9 @@ return [
 
 		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 		LaravelDoctrine\ORM\DoctrineServiceProvider::class,
-		GrahamCampbell\Throttle\ThrottleServiceProvider::class
+		GrahamCampbell\Throttle\ThrottleServiceProvider::class,
+
+		Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class
     ],
 
     /*
