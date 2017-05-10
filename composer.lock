@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b260e1eefba904c8c1c9e0f25a365f4e",
-    "content-hash": "480534581af5491bf0a8d5ed313272f6",
+    "hash": "adb4c2042566f98e850a13c2ce332fe0",
+    "content-hash": "f2e61fbff3d5f5288f53fada4dfcc35d",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1083,6 +1083,67 @@
                 }
             ],
             "time": "2015-04-20 18:58:01"
+        },
+        {
+            "name": "laravel-doctrine/fluent",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel-doctrine/fluent.git",
+                "reference": "de6a6cda447a8c0177281ce14ad75f295361cf97"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel-doctrine/fluent/zipball/de6a6cda447a8c0177281ce14ad75f295361cf97",
+                "reference": "de6a6cda447a8c0177281ce14ad75f295361cf97",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/inflector": "^1.1",
+                "doctrine/orm": "2.5.*",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "beberlei/doctrineextensions": "~1.0",
+                "gedmo/doctrine-extensions": "^2.4",
+                "mockery/mockery": "~0.9",
+                "nesbot/carbon": "*",
+                "phpunit/phpunit": "~4.0",
+                "zf1/zend-date": "~1.12"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LaravelDoctrine\\Fluent\\": "src/",
+                    "Gedmo\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guido Contreras Woda",
+                    "email": "guiwoda@gmail.com"
+                },
+                {
+                    "name": "Patrick Brouwers",
+                    "email": "patrick@maatwebsite.nl"
+                }
+            ],
+            "description": "A fluent PHP mapping driver for Doctrine2.",
+            "keywords": [
+                "data mapper",
+                "database",
+                "doctrine",
+                "fluent",
+                "laravel",
+                "mapping driver",
+                "mappings",
+                "orm"
+            ],
+            "time": "2016-05-10 07:41:10"
         },
         {
             "name": "laravel-doctrine/orm",
