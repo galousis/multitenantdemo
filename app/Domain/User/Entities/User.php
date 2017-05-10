@@ -1,6 +1,8 @@
 <?php
 namespace App\Domain\User\Entities;
 
+use Carbon\Carbon;
+
 /**
  * Class User
  *
@@ -26,9 +28,20 @@ class User
 	private $password;
 
 	/**
+	 * @var string
+	 */
+	private $rememberToken;
+
+	/**
 	 * @var \DateTime
 	 */
 	private $createdAt = 'CURRENT_TIMESTAMP';
+
+	/**
+	 * @var \DateTime
+	 */
+	private $updatedAt = 'CURRENT_TIMESTAMP';
+
 
 	/**
 	 * @var integer
@@ -46,7 +59,9 @@ class User
 		$this->setEmail($data['email']);
 		$this->setName($data['name']);
 		$this->setPassword($data['password']);
+		$this->setRememberToken();
 		$this->setCreatedAt();
+		$this->setUpdatedAt();
 	}
 	#endregion
 
@@ -111,6 +126,14 @@ class User
 	}
 
 	/**
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getId()
@@ -121,6 +144,21 @@ class User
 	public function setCreatedAt()
 	{
 		$this->createdAt = new \DateTime();
+	}
+
+	public function setUpdatedAt()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+
+	public function setRememberToken()
+	{
+		$this->rememberToken = '';
+	}
+
+	public function getRememberToken()
+	{
+		return $this->rememberToken;
 	}
 	#endregion
 

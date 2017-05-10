@@ -43,6 +43,7 @@ class UserLoginService implements UserLoginServiceContract
 	 */
 	public function execute($email, $password){
 
+		//TODO fix bug when result is null
 		$manager = $this->repository->findByEmail($email);
 
 		$encrypted = $manager->getPassword();
