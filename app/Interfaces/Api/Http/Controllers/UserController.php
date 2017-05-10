@@ -4,7 +4,6 @@ namespace App\Interfaces\Api\Http\Controllers;
 use App\Application\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Crypt;
 
 /**
  * Class UserController
@@ -28,7 +27,6 @@ class UserController extends Controller
 		$this->userAppService = $userAppService;
 	}
 
-
 	/**
 	 * @param Request $request
 	 * @return mixed
@@ -39,11 +37,8 @@ class UserController extends Controller
 		$email = $data['email'];
 		$password = $data['password'];
 
-		//$a = Crypt::encrypt($password);
-
 		return $this->userAppService->login($email,$password);
 	}
-
 
 	/**
 	 * @param Request $request
@@ -55,7 +50,6 @@ class UserController extends Controller
 		return $this->userAppService->createManager($post);
 	}
 
-
 	/**
 	 * @param $page
 	 * @param $limit
@@ -65,7 +59,6 @@ class UserController extends Controller
 	{
 		return $this->userAppService->getByPage($page,$limit);
 	}
-
 
 	/**
 	 * @param Request $request
