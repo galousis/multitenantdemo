@@ -27,6 +27,8 @@ abstract class Authentifier
 	public function authenticate($email, $password)
 	{
 
+		//TODO finish it
+
 		$user = $this->repository->ofEmail($email);
 
 		if (!$user) {
