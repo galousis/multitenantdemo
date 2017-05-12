@@ -10,19 +10,19 @@ namespace App\Application\Services\User\Access;
 class LoginUserRequest
 {
 	#region properties
-	private $username;
+	private $email;
 	private $password;
 	#endregion
 
 	#region Contructor
 	/**
 	 * LoginUserRequest constructor.
-	 * @param $username
+	 * @param $email
 	 * @param $password
 	 */
-	public function __construct($username, $password)
+	public function __construct($email, $password)
 	{
-		$this->username = $username;
+		$this->email = $email;
 		$this->password = $password;
 	}
 	#endregion
@@ -31,9 +31,9 @@ class LoginUserRequest
 	/**
 	 * @return mixed
 	 */
-	public function username()
+	public function email()
 	{
-		return $this->username;
+		return $this->email;
 	}
 
 	/**

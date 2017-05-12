@@ -3,6 +3,7 @@ namespace App\Domain\User;
 
 use App\Domain\User\Contracts\UserRepositoryContract;
 use App\Domain\Event\DomainEvent;
+use App\Domain\User\Entities\User;
 
 abstract class Authentifier
 {
@@ -29,7 +30,7 @@ abstract class Authentifier
 
 		//TODO finish it
 
-		$user = $this->repository->ofEmail($email);
+		$user = $this->repository->findByEmail($email);
 
 		if (!$user) {
 			return false;

@@ -4,7 +4,7 @@ namespace App\Application\Services\User\Access;
 use App\Domain\User\Authentifier;
 use App\Application\Services\ApplicationService;
 use App\Domain\User\Entities\User;
-use App\Application\Services\User\Access\SignUpUserRequest;
+use App\Application\Services\User\Access\LoginUserRequest;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 
 /**
@@ -30,7 +30,7 @@ class LogInUserService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param SignUpUserRequest $request
+	 * @param LoginUserRequest $request
 	 * @return User
 	 * @throws UserAlreadyExistsException
 	 */
