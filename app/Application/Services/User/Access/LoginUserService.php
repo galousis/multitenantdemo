@@ -36,10 +36,7 @@ class LogInUserService implements ApplicationService
 	 */
 	public function execute($request = null)
 	{
-		$email 		= $request->email();
-		$password 	= $request->password();
-
-		return $this->authenticationService->authenticate($email, $password);
+		return $this->authenticationService->authenticate($request->email(), $request->password());
 	}
 	#endregion
 }

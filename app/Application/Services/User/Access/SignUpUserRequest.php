@@ -16,7 +16,7 @@ class SignUpUserRequest
 	#endregion
 
 	#region Constructor
-	public function __construct($email, $password)
+	public function __construct($email = null, $password = null)
 	{
 		$this->email = $email;
 		$this->password = $password;

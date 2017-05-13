@@ -20,7 +20,7 @@ class LoginUserRequest
 	 * @param $email
 	 * @param $password
 	 */
-	public function __construct($email, $password)
+	public function __construct($email = null, $password = null)
 	{
 		$this->email = $email;
 		$this->password = $password;
@@ -42,6 +42,22 @@ class LoginUserRequest
 	public function password()
 	{
 		return $this->password;
+	}
+
+	/**
+	 * @param $email
+	 */
+	public function setEmail($email)
+	{
+		$this->email = $email;
+	}
+
+	/**
+	 * @param $password
+	 */
+	public function setPassword($password)
+	{
+		$this->password = $password;
 	}
 	#endregion
 

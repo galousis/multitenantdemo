@@ -1,9 +1,14 @@
 <?php
 namespace App\Interfaces\Api\Http\Controllers;
 
-use App\Application\Services\UserService;
+//use App\Application\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Application\Services\User\Access\LoginUserRequest;
+use App\Application\Services\User\Access\LogInUserService;
+use App\Application\Services\User\Access\LogOutUserService;
+use App\Application\Services\User\Access\SignUpUserRequest;
+use App\Application\Services\User\Access\SignUpUserService;
 
 /**
  * Class UserController
@@ -13,31 +18,61 @@ use Illuminate\Http\JsonResponse;
  */
 class UserController extends Controller
 {
-	/**
-	 * @var UserService
-	 */
-	public $userAppService;
 
+	#region Properties
+	/** @var LoginUserRequest */
+	public $loginUserRequest;
+
+	/** @var SignUpUserRequest */
+	public $signUpUserRequest;
+
+	/** @var LogInUserService  */
+	public $logInUserService;
+
+	/** @var LogOuUserService  */
+	public $logOutUserService;
+
+	/** @var SignUpUserService  */
+	public $signUpUserService;
+	#endregion
+
+	#region Constructor
 	/**
 	 * UserController constructor.
-	 * @param UserService $userAppService
+	 * @param LoginUserRequest $loginUserRequest
+	 * @param SignUpUserRequest $signUpUserRequest
+	 * @param LogInUserService $logInUserService
+	 * @param LogOutUserService $logOutUserService
+	 * @param SignUpUserService $signUpUserService
 	 */
-	public function __construct(UserService $userAppService)
+	public function __construct(
+		LoginUserRequest $loginUserRequest,
+		SignUpUserRequest $signUpUserRequest,
+		LogInUserService $logInUserService,
+		LogOutUserService $logOutUserService,
+		SignUpUserService $signUpUserService
+	)
 	{
-		$this->userAppService = $userAppService;
-	}
+		$this->loginUserRequest 	= $loginUserRequest;
+		$this->signUpUserRequest 	= $signUpUserRequest;
 
+		$this->logInUserService 	= $logInUserService;
+		$this->logOutUserService	= $logOutUserService;
+		$this->signUpUserService 	= $signUpUserService;
+	}
+	#endregion
+
+	#region Methods
 	/**
 	 * @param Request $request
 	 * @return mixed
 	 */
 	public function login(Request $request)
 	{
-		$data = $request->only(['email','password']);
-		$email = $data['email'];
-		$password = $data['password'];
+		$this->loginUserRequest->setEmail($request->get('email'));
+		$this->loginUserRequest->setPassword($request->get('password'));
 
-		return $this->userAppService->login($email,$password);
+		return $this->logInUserService->execute($this->loginUserRequest);
 	}
 
 	/**
@@ -69,5 +104,6 @@ class UserController extends Controller
 		$criteria = $request->only(['filter']);
 		return $this->userAppService->getByFilter($criteria['filter']);
 	}
+	#endregion
 
 }
