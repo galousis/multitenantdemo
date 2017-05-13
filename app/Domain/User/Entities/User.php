@@ -2,6 +2,7 @@
 namespace App\Domain\User\Entities;
 
 use Carbon\Carbon;
+use App\Domain\User\ValueObjects\UserId;
 
 /**
  * Class User
@@ -12,6 +13,9 @@ use Carbon\Carbon;
 class User
 {
 	#region properties
+	/** @var UserId */
+	private $id;
+
 	/**
 	 * @var string
 	 */
@@ -41,12 +45,6 @@ class User
 	 * @var \DateTime
 	 */
 	private $updatedAt = 'CURRENT_TIMESTAMP';
-
-
-	/**
-	 * @var integer
-	 */
-	private $id;
 	#endregion
 
 	#region constructor
@@ -56,6 +54,7 @@ class User
 	 */
 	public function __construct($data)
 	{
+		$this->id = $data['id'];
 		$this->setEmail($data['email']);
 		$this->setName($data['name']);
 		$this->setPassword($data['password']);
