@@ -1,11 +1,13 @@
 <?php
 namespace App\Application\Services\User\Access;
 
+use App\Application\Exceptions\LoginUserServiceException;
 use App\Domain\User\Authentifier;
 use App\Application\Services\ApplicationService;
 use App\Domain\User\Entities\User;
 use App\Application\Services\User\Access\LoginUserRequest;
-use App\Domain\User\Exceptions\UserAlreadyExistsException;
+use App\Interfaces\Api\Http\Response\JsonResponseDefault;
+use App\Interfaces\Api\Http\Controllers\ApiController;
 
 /**
  * Class LogInUserService
@@ -30,13 +32,20 @@ class LogInUserService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param LoginUserRequest $request
-	 * @return User
-	 * @throws UserAlreadyExistsException
+	 * @param null $request
+	 * @return mixed
+	 * @throws LoginUserServiceException
 	 */
 	public function execute($request = null)
 	{
-		return $this->authenticationService->authenticate($request->email(), $request->password());
+		try{
+
+			$response = $this->authenticationService->authenticate($request->email(), $request->password());
+			return JsonResponseDefault::create(true,$response,'successfully logged in',200);
+
+		}catch (\Exception $e){
+			throw new LoginUserServiceException(400, ApiController::CODE_BAD_REQUEST);
+		}
 	}
 	#endregion
 }

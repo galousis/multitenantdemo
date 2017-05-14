@@ -9,6 +9,8 @@ use App\Application\Services\User\Access\LogInUserService;
 use App\Application\Services\User\Access\LogOutUserService;
 use App\Application\Services\User\Access\SignUpUserRequest;
 use App\Application\Services\User\Access\SignUpUserService;
+use App\Application\Services\User\Create\CreateUserService;
+use App\Application\Services\User\Access\GetUserByService;
 
 /**
  * Class UserController
@@ -16,7 +18,7 @@ use App\Application\Services\User\Access\SignUpUserService;
  * @package App\Interfaces\Web\Http\Controllers\User
  * @author thanos theodorakopoulos galousis@gmail.com
  */
-class UserController extends Controller
+class UserController extends ApiController
 {
 
 	#region Properties
@@ -34,31 +36,39 @@ class UserController extends Controller
 
 	/** @var SignUpUserService  */
 	public $signUpUserService;
+
+	/** @var CreateUserService  */
+	public $createUserService;
+
+	/** @var GetUserByService  */
+	public $getUserBy;
 	#endregion
 
 	#region Constructor
 	/**
 	 * UserController constructor.
+	 *
 	 * @param LoginUserRequest $loginUserRequest
 	 * @param SignUpUserRequest $signUpUserRequest
 	 * @param LogInUserService $logInUserService
 	 * @param LogOutUserService $logOutUserService
 	 * @param SignUpUserService $signUpUserService
+	 * @param CreateUserService $createUserService
+	 * @param GetUserByService $getUserBy
 	 */
 	public function __construct(
-		LoginUserRequest $loginUserRequest,
-		SignUpUserRequest $signUpUserRequest,
-		LogInUserService $logInUserService,
-		LogOutUserService $logOutUserService,
-		SignUpUserService $signUpUserService
+		LoginUserRequest $loginUserRequest, SignUpUserRequest $signUpUserRequest,
+		LogInUserService $logInUserService, LogOutUserService $logOutUserService,
+		SignUpUserService $signUpUserService, CreateUserService $createUserService, GetUserByService $getUserBy
 	)
 	{
 		$this->loginUserRequest 	= $loginUserRequest;
 		$this->signUpUserRequest 	= $signUpUserRequest;
-
 		$this->logInUserService 	= $logInUserService;
 		$this->logOutUserService	= $logOutUserService;
 		$this->signUpUserService 	= $signUpUserService;
+		$this->createUserService	= $createUserService;
+		$this->getUserBy			= $getUserBy;
 	}
 	#endregion
 
@@ -69,8 +79,10 @@ class UserController extends Controller
 	 */
 	public function login(Request $request)
 	{
-		$this->loginUserRequest->setEmail($request->get('email'));
-		$this->loginUserRequest->setPassword($request->get('password'));
+		$data = $request->only(['email','password']);
+
+		$this->loginUserRequest->setEmail($data['email']);
+		$this->loginUserRequest->setPassword($data['password']);
 
 		return $this->logInUserService->execute($this->loginUserRequest);
 	}
@@ -81,18 +93,16 @@ class UserController extends Controller
 	 */
 	public function create(Request $request)
 	{
-		$post = $request->all();
-		return $this->userAppService->createManager($post);
+		return $this->createUserService->execute($request);
 	}
 
 	/**
-	 * @param $page
-	 * @param $limit
-	 * @return mixed
+	 * @param Request $request
+	 * @return \App\Domain\User\Entities\User
 	 */
-	public function getByPage($page, $limit)
+	public function getByPage(Request $request)
 	{
-		return $this->userAppService->getByPage($page,$limit);
+		return $this->getUserBy->execute($request);
 	}
 
 	/**
@@ -102,7 +112,7 @@ class UserController extends Controller
 	public function getByFilter(Request $request)
 	{
 		$criteria = $request->only(['filter']);
-		return $this->userAppService->getByFilter($criteria['filter']);
+		return $this->getUserBy->execute($criteria['filter']);
 	}
 	#endregion
 

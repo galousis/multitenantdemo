@@ -34,7 +34,7 @@ class UserTransformer implements UserDataTransformer
 	public function read()
 	{
 		return [
-			'id' => $this->user->id()->id(),
+			'id' => $this->user->getId(),
 			'num_documents' => 0,
 		];
 	}

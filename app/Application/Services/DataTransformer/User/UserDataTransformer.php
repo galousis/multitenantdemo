@@ -1,6 +1,8 @@
 <?php
 namespace App\Application\Services\DataTransformer\User;
 
+use App\Domain\User\Entities\User;
+
 /**
  * Interface UserDataTransformer
  *
@@ -9,5 +11,9 @@ namespace App\Application\Services\DataTransformer\User;
  */
 interface UserDataTransformer
 {
+
+	public function read();
+
+	public function write(User $user);
 
 }

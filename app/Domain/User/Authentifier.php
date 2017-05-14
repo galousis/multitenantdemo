@@ -7,6 +7,8 @@ use App\Domain\User\Entities\User;
 use App\Application\Exceptions\JWTException; 			#Call a exception from Domain...
 use Firebase\JWT\JWT;  									#Infrastructure dependency
 use Illuminate\Support\Facades\Hash;
+use App\Domain\User\Exceptions\UserDoesNotExistException;
+use App\Interfaces\Api\Http\Controllers\ApiController;
 
 class Authentifier
 {
@@ -37,7 +39,7 @@ class Authentifier
 		$user = $this->repository->findByEmail($email);
 
 		if (!$user) {
-			return false;
+			throw new UserDoesNotExistException(400, ApiController::CODE_BAD_REQUEST);
 		}
 
 		$encrypted = $user->getPassword();
@@ -67,7 +69,7 @@ class Authentifier
 			];
 
 			$jwt = JWT::encode(
-				$data,      //Data to be encoded in the JWT
+//				$data,      //Data to be encoded in the JWT
 				getenv('APP_KEY'), // The signing key
 				getenv('APP_ENCRYPT_ALGORITHM')  // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
 			);
@@ -78,7 +80,7 @@ class Authentifier
 
 		} else {
 
-			throw new JWTException('Unauthorized',401);
+			throw new JWTException(401, ApiController::CODE_UNAUTHORIZED);
 		}
 
 	}

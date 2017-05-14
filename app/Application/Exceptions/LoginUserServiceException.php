@@ -1,13 +1,14 @@
 <?php
 namespace App\Application\Exceptions;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
- * Class JWTException
+ * Class LoginUserServiceException
  *
  * @package App\Application\Exceptions
  * @author thanos theodorakopoulos galousis@gmail.com
  */
-class JWTException  extends \Exception
+class LoginUserServiceException extends HttpException
 {
 
 }

@@ -23,6 +23,6 @@ Route::post('auth/login', ['uses' => 'UserController@login']);
 #protected routes
 Route::group(['middleware' => ['jwt','throttle:30:5','cors']], function () {
 	Route::post('users/create', ['uses' => 'UserController@create', 'as' => 'create.users']);
-	Route::post('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
-	Route::post('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
+	Route::get('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
+	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
 });

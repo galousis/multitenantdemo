@@ -31,7 +31,7 @@ class Kernel extends HttpKernel
             \App\Interfaces\Web\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Interfaces\Web\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -59,6 +59,6 @@ class Kernel extends HttpKernel
         //'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		'jwt' => \App\Interfaces\Api\Http\Middleware\JWTMiddleware::class,
 		'cors' => \App\Interfaces\Api\Http\Middleware\CORSMiddleware::class,
-		'throttle' =>  ThrottleMiddleware::class,
+		'throttle' =>  \GrahamCampbell\Throttle\Http\Middleware\ThrottleMiddleware::class,
     ];
 }

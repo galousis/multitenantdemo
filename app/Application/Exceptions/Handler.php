@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Interfaces\Api\Http\Controllers\ApiController;
 
 class Handler extends ExceptionHandler
 {
@@ -45,9 +46,30 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+
+		if ($exception instanceof NotFoundHttpException) {
+			if ($request->segment(1) == 'api') {
+				return (new ApiController())->errorNotFound($exception->getMessage());
+			}
+		}
+		if ($exception instanceof AuthorizationException) {
+			if ($request->segment(1) == 'api') {
+				if($request->user()){
+					return (new ApiController())->errorUnauthorized('You need permission to perform this action.');
+				}
+				return (new ApiController())->errorForbidden('You are not logged in.');
+			} else {
+				return redirect('login');
+			}
+		}
+
 		if ($this->isHttpException($exception))
 		{
 			if($exception instanceof NotFoundHttpException)
+			{
+				return response()->view('exceptions.404', [], 404);
+			}
+			if($exception instanceof LoginUserServiceException)
 			{
 				return response()->view('exceptions.404', [], 404);
 			}
