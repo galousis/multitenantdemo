@@ -17,7 +17,8 @@
         "mpociot/laravel-apidoc-generator": "^2.0",
         "nesbot/carbon": "^1.22",
         "predis/predis": "^1.1",
-        "ramsey/uuid": "^3.6"
+        "ramsey/uuid": "^3.6",
+        "tymon/jwt-auth": "^0.5.11"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
