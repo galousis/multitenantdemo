@@ -11,19 +11,27 @@ class SignUpUserRequest
 {
 
 	#region properties
+	private $name;
 	private $email;
 	private $password;
 	#endregion
 
 	#region Constructor
-	public function __construct($email = null, $password = null)
+	/**
+	 * SignUpUserRequest constructor.
+	 * @param $name
+	 * @param null $email
+	 * @param null $password
+	 */
+	public function __construct($name = null, $email = null, $password = null)
 	{
-		$this->email = $email;
+		$this->name 	= $name;
+		$this->email 	= $email;
 		$this->password = $password;
 	}
 	#endregion
 
-	#region Methods
+	#region setter, getters Methods
 	/**
 	 * @return mixed
 	 */
@@ -35,9 +43,41 @@ class SignUpUserRequest
 	/**
 	 * @return mixed
 	 */
+	public function name()
+	{
+		return $this->name();
+	}
+
+	/**
+	 * @return mixed
+	 */
 	public function password()
 	{
 		return $this->password;
+	}
+
+	/**
+	 * @param $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @param $email
+	 */
+	public function setEmail($email)
+	{
+		$this->email = $email;
+	}
+
+	/**
+	 * @param $password
+	 */
+	public function setPassword($password)
+	{
+		$this->password = $password;
 	}
 	#endregion
 

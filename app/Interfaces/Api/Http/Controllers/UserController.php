@@ -2,6 +2,7 @@
 namespace App\Interfaces\Api\Http\Controllers;
 
 //use App\Application\Services\UserService;
+use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Application\Services\User\Access\LoginUserRequest;
@@ -11,6 +12,7 @@ use App\Application\Services\User\Access\SignUpUserRequest;
 use App\Application\Services\User\Access\SignUpUserService;
 use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
+use Config;
 
 /**
  * Class UserController
@@ -85,6 +87,41 @@ class UserController extends ApiController
 		$this->loginUserRequest->setPassword($data['password']);
 
 		return $this->logInUserService->execute($this->loginUserRequest);
+	}
+
+	/**
+	 * @param Request $request
+	 * @return mixed
+	 */
+	public function signup(Request $request)
+	{
+		/** @var JsonResponse $result */
+		$result = $this->signUpUserService->execute($request);
+
+		//TODO
+//		$hasToReleaseToken 	= Config::get('auth.signup_token_release');
+//		if($result->content())
+//		if($hasToReleaseToken) {
+//			return $this->login($request);
+//		}
+
+		return $result;
+	}
+
+	/**
+	 * @param Request $request
+	 */
+	public function recovery(Request $request)
+	{
+		//TODO
+	}
+
+	/**
+	 * @param Request $request
+	 */
+	public function reset(Request $request)
+	{
+		//TODO
 	}
 
 	/**

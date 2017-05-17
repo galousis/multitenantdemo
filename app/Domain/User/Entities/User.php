@@ -54,7 +54,7 @@ class User
 	 */
 	public function __construct($data)
 	{
-		$this->id = $data['id'];
+		$this->id = isset($data['id']) ? $data['id'] : null;
 		$this->setEmail($data['email']);
 		$this->setName($data['name']);
 		$this->setPassword($data['password']);

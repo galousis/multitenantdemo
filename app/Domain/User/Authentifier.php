@@ -7,6 +7,7 @@ use App\Domain\User\Entities\User;
 use App\Application\Services\User\Access\LoginUserRequest;
 //use App\Application\Exceptions\JWTException; 			#Call a exception from Domain...
 //use Firebase\JWT\JWT;  									#Infrastructure dependency
+use App\Domain\User\Exceptions\UserDoesNotExistException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use Illuminate\Http\Request;
@@ -52,6 +53,11 @@ class Authentifier
 
 			/** @var User $user */
 			$user = $this->repository->findByEmail($request->email());
+
+			if (!$user)
+			{
+				throw new UserDoesNotExistException('User not found', 500);
+			}
 
 			$encrypted = $user->getPassword();
 

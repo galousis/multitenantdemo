@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 
 #auth
 Route::post('auth/login', ['uses' => 'UserController@login']);
+Route::post('auth/signup', ['uses' => 'UserController@signup']);
 
 #protected routes
 Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {

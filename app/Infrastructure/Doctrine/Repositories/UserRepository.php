@@ -92,18 +92,12 @@ class UserRepository implements UserRepositoryContract
 	/**
 	 * @param $email
 	 * @return null|object
-	 * @throws UserDoesNotExistException
 	 */
 	public function findByEmail($email)
 	{
 		$result = $this->em->getRepository($this->class)->findOneBy([
 				'email'=>$email
 		]);
-
-		if (!$result)
-		{
-			throw new UserDoesNotExistException(401, ApiController::CODE_NOT_FOUND);
-		}
 
 		return $result;
 	}
