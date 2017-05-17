@@ -182,7 +182,8 @@ return [
 		LaravelDoctrine\ORM\DoctrineServiceProvider::class,
 		GrahamCampbell\Throttle\ThrottleServiceProvider::class,
 
-		Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class
+		Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class
     ],
 
     /*
@@ -234,7 +235,8 @@ return [
 		'EntityManager' => LaravelDoctrine\ORM\Facades\EntityManager::class,
 		'Registry' => LaravelDoctrine\ORM\Facades\Registry::class,
 		'Doctrine' => LaravelDoctrine\ORM\Facades\Doctrine::class,
-		'Throttle' => GrahamCampbell\Throttle\Facades\Throttle::class
+		'Throttle' => GrahamCampbell\Throttle\Facades\Throttle::class,
+		'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class
 
 
 	],

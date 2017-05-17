@@ -14,7 +14,7 @@ class User
 {
 	#region properties
 	/** @var UserId */
-	private $id;
+	public $id;
 
 	/**
 	 * @var string

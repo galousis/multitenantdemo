@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 Route::post('auth/login', ['uses' => 'UserController@login']);
 
 #protected routes
-Route::group(['middleware' => ['jwt','throttle:30:5','cors']], function () {
+Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {
 	Route::post('users/create', ['uses' => 'UserController@create', 'as' => 'create.users']);
 	Route::get('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
 	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);

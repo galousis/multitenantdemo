@@ -1,7 +1,7 @@
 <?php
 namespace App\Domain\User\Exceptions;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 /**
  * Class UserAlreadyExistsException
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * @package App\Domain\User\Exceptions
  * @author thanos theodorakopoulos galousis@gmail.com
  */
-class UserAlreadyExistsException extends HttpException
+class UserAlreadyExistsException extends JWTException
 {
 
 }

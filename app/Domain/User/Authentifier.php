@@ -4,11 +4,15 @@ namespace App\Domain\User;
 use App\Domain\User\Contracts\UserRepositoryContract;
 use App\Domain\Event\DomainEvent;
 use App\Domain\User\Entities\User;
-use App\Application\Exceptions\JWTException; 			#Call a exception from Domain...
-use Firebase\JWT\JWT;  									#Infrastructure dependency
+use App\Application\Services\User\Access\LoginUserRequest;
+//use App\Application\Exceptions\JWTException; 			#Call a exception from Domain...
+//use Firebase\JWT\JWT;  									#Infrastructure dependency
+use Tymon\JWTAuth\Exceptions\JWTException;
+use JWTAuth;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use App\Domain\User\Exceptions\UserDoesNotExistException;
-use App\Interfaces\Api\Http\Controllers\ApiController;
+use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 
 class Authentifier
 {
@@ -32,55 +36,52 @@ class Authentifier
 	#endregion
 
 	#region Methods
-	public function authenticate($email, $password)
+
+	/**
+	 * @param LoginUserRequest $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function authenticate($request)
 	{
 
-		//TODO fix bug when result is null
-		$user = $this->repository->findByEmail($email);
+		try {
 
-		if (!$user) {
-			throw new UserDoesNotExistException(400, ApiController::CODE_BAD_REQUEST);
-		}
+			$data =[];
+			$data['name'] 	= null;
+			$data['jwt'] 	= null;
 
-		$encrypted = $user->getPassword();
+			/** @var User $user */
+			$user = $this->repository->findByEmail($request->email());
 
-		if (Hash::check($password, $encrypted)) {
+			$encrypted = $user->getPassword();
 
-			//$tokenId    = base64_encode(mcrypt_create_iv(32));
-			$issuedAt   = time();
-			$notBefore  = $issuedAt + 10;  //Adding 10 seconds
-			$expire     = $notBefore + 60; // Adding 60 seconds
-			$serverName = getenv('APP_SERVER_NAME');
+			if (!Hash::check($request->password(), $encrypted)) {
+				throw new JWTException('Wrong password', 500);
+			}
 
-			/*
-			 * Create the token as an array
-			 */
-			$data = [
-				'iat'  => $issuedAt,         // Issued at: time when the token was generated
-				//'jti'  => $tokenId,          // Json Token Id: an unique identifier for the token
-				'iss'  => $serverName,       // Issuer
-				'nbf'  => $notBefore,        // Not before
-				'exp'  => $expire,           // Expire
+			$token = JWTAuth::fromUser($user, [
+				'exp' => Carbon::now()->addWeek()->timestamp,
 				'data' => [                  // Data related to the signer user
-					'userId'   => $user->getId(), // userid from the users table
+					'userId'   => $user->id, // userid from the users table
 					'name' => $user->getName(), // User name
 					'email' => $user->getEmail(), // User name
 				]
-			];
+			]);
+		} catch (JWTException $e) {
+			return JsonResponseDefault::create(true, $data,'Could not authenticate',401);
+		}
 
-			$jwt = JWT::encode(
-//				$data,      //Data to be encoded in the JWT
-				getenv('APP_KEY'), // The signing key
-				getenv('APP_ENCRYPT_ALGORITHM')  // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
-			);
-
+		if (!$token)
+		{
+			$data['name'] = $user->getName();
+			return JsonResponseDefault::create(true, $data, 'Could not authenticate',401);
+		}else
+		{
 			//$this->persistAuthentication($user);
 
-			return ['jwt'=>$jwt];
-
-		} else {
-
-			throw new JWTException(401, ApiController::CODE_UNAUTHORIZED);
+			$data['name'] = $user->getName();
+			$data['jwt']  = $token;
+			return JsonResponseDefault::create(true, $data, 'successfully logged in',200);
 		}
 
 	}

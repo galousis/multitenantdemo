@@ -2,12 +2,14 @@
 namespace App\Infrastructure\Doctrine\Repositories;
 
 use App\Domain\User\Entities\User;
+use App\Domain\User\Exceptions\UserDoesNotExistException;
 use Doctrine\ORM\EntityManager;
 use App\Domain\User\Contracts\UserRepositoryContract;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
+use App\Interfaces\Api\Http\Controllers\ApiController;
 
 /**
  * Class UserRepository
@@ -89,14 +91,21 @@ class UserRepository implements UserRepositoryContract
 
 	/**
 	 * @param $email
-	 * @param $password
-	 * @return User
+	 * @return null|object
+	 * @throws UserDoesNotExistException
 	 */
 	public function findByEmail($email)
 	{
-		return $this->em->getRepository($this->class)->findOneBy([
-			'email'=>$email
+		$result = $this->em->getRepository($this->class)->findOneBy([
+				'email'=>$email
 		]);
+
+		if (!$result)
+		{
+			throw new UserDoesNotExistException(401, ApiController::CODE_NOT_FOUND);
+		}
+
+		return $result;
 	}
 
 	/**

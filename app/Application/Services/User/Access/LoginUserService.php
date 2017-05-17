@@ -8,6 +8,7 @@ use App\Domain\User\Entities\User;
 use App\Application\Services\User\Access\LoginUserRequest;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Interfaces\Api\Http\Controllers\ApiController;
+use Illuminate\Http\Request;
 
 /**
  * Class LogInUserService
@@ -32,20 +33,14 @@ class LogInUserService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param null $request
+	 * @param $request
 	 * @return mixed
 	 * @throws LoginUserServiceException
 	 */
 	public function execute($request = null)
 	{
-		try{
-
-			$response = $this->authenticationService->authenticate($request->email(), $request->password());
-			return JsonResponseDefault::create(true,$response,'successfully logged in',200);
-
-		}catch (\Exception $e){
-			throw new LoginUserServiceException(400, ApiController::CODE_BAD_REQUEST);
-		}
+			$response = $this->authenticationService->authenticate($request);
+			return $response;
 	}
 	#endregion
 }

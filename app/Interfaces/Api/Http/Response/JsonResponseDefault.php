@@ -13,9 +13,10 @@ class JsonResponseDefault
 	/**
 	 * @param $success
 	 * @param $data
+	 * @param $meta
 	 * @param $message
 	 * @param $code
-	 * @return mixed
+	 * @return static
 	 */
 	public static function create($success, $data, $message, $code)
 	{
