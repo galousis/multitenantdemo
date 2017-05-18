@@ -1,22 +1,168 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
+ * include Vue and Vue Resource. This gives a great starting point for
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require('./bootstrap');
 
-window.Vue = require('vue');
+/*
+ * vue router inclusion
+ * */
+import VueRouter from "vue-router";
+import auth from "./auth";
+import App from "./components/App.vue";
+import Container from "./components/Container.vue";
+import About from "./components/About.vue";
+import Dashboard from "./components/Dashboard.vue";
+import Login from "./components/Auth/Login.vue";
+import Register from "./components/Auth/Register.vue";
+import ForgotPassword from "./components/Auth/ForgotPassword.vue";
+import Users from "./components/Users.vue";
+import Passport from "./components/passport/Index.vue";
+
+
+var VueResource = require('vue-resource');
+var VueTables = require('vue-tables-2');
+
+/*
+ * import
+ * components
+ * */
+
+
+Vue.use(VueResource);
+Vue.use(VueRouter);
+Vue.use(VueTables.client);
+Vue.use(VueTables.server);
 
 /**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * We'll register a HTTP interceptor to attach the "CSRF" header to each of
+ * the outgoing requests issued by this application. The CSRF middleware
+ * included with Laravel will automatically verify the header's value.
  */
 
-Vue.component('example', require('./components/Example.vue'));
-
-const app = new Vue({
-    el: '#app'
+Vue.http.interceptors.push((request, next) => {
+    request.headers['X-CSRF-TOKEN'] = Laravel.csrfToken;
+    next();
 });
+//Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+/*
+ * components
+ * */
+const Default = {template: '<div>default</div>'}
+const Foo = {template: '<div>foo</div>'}
+const Bar = {template: '<div>bar</div>'}
+const Baz = {template: '<div>baz</div>'}
+
+
+const router = new VueRouter({
+    mode: 'hash',
+    base: __dirname,
+    routes: [
+        {
+            path: '/',
+            component: Container,
+            meta: {requiresAuth: true},
+            children: [
+                // an empty path will be treated as the default, e.g.
+                // components rendered at /parent: Root -> Parent -> Default
+                {path: '', component: Dashboard},
+
+                // components rendered at /parent/foo: Root -> Parent -> Foo
+                {path: 'users', component: Users},
+                {path: 'passport', component: Passport},
+
+                // components rendered at /parent/bar: Root -> Parent -> Bar
+                {path: 'bar', component: Bar},
+
+                // NOTE absolute path here!
+                // this allows you to leverage the component nesting without being
+                // limited to the nested URL.
+                // components rendered at /baz: Root -> Parent -> Baz
+                {path: '/baz', component: Baz}
+            ]
+        },
+
+        {
+            path: '/about',
+            component: About,
+            meta: {requiresAuth: true},
+            children: [
+                // an empty path will be treated as the default, e.g.
+                // components rendered at /parent: Root -> Parent -> Default
+                {path: '', component: Dashboard},
+
+                // components rendered at /parent/foo: Root -> Parent -> Foo
+                {path: 'foo', component: Foo},
+
+                // components rendered at /parent/bar: Root -> Parent -> Bar
+                {path: 'bar', component: Bar},
+
+                // NOTE absolute path here!
+                // this allows you to leverage the component nesting without being
+                // limited to the nested URL.
+                // components rendered at /baz: Root -> Parent -> Baz
+                {path: '/baz', component: Baz}
+            ]
+        },
+        {
+            path: '/login',
+            component: Login
+        },
+        {
+            path: '/forgot-password',
+            component: ForgotPassword
+        },
+        {
+            path: '/register',
+            component: Register
+        },
+        {
+            path: '/logout',
+            beforeEnter (to, from, next) {
+                auth.logout();
+                next('/login')
+            }
+        }
+    ]
+});
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (!auth.loggedIn()) {
+             next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
+        } else {
+            Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+            next()
+        }
+    } else {
+        next(); // make sure to always call next()!
+    }
+});
+
+// Vue.http.interceptors.push((request, next) => {
+//     // continue to next interceptor
+//     next((response) => {
+//         if (response.status == 401) {
+//             auth.logout();
+//         }
+//     });
+//
+// });
+
+// 4. Create and mount the root instance.
+// Make sure to inject the router with the router option to make the
+// whole app router-aware.
+
+new Vue(Vue.util.extend({router}, App)).$mount('#app');
+
+/*
+ * fils delete
+ * reciepent end progress and compress download
+ * simple files -> smallfiles
+ *
+ * */
