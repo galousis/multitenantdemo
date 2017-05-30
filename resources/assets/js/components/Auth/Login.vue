@@ -116,8 +116,8 @@
     export default {
         data () {
             return {
-                email: 'joe@example.com',
-                pass: '',
+                email: 'wiza.joannie@example.com',
+                pass: 'secret',
                 error: false
             }
         },

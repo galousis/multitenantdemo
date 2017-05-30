@@ -96,7 +96,7 @@
     export default {
         data () {
             return {
-                email: 'joe@example.com',
+                email: 'wiza.joannie@example.com',
                 pass: '',
                 error: false
             }

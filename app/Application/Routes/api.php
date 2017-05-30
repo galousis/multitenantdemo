@@ -24,6 +24,8 @@ Route::post('auth/signup', ['uses' => 'UserController@signup']);
 #protected routes
 Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {
 	Route::post('users/create', ['uses' => 'UserController@create', 'as' => 'create.users']);
-	Route::get('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
-	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
+//	Route::get('users/getByPage/{page}/{limit}', ['uses' => 'UserController@getByPage', 'as' => 'get.users']);
+	Route::resource('users', 'UserController', array('only' => array('index')));
+//	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
+	Route::post('auth/me', ['uses' => 'UserController@me', 'as' => 'get.me']);
 });

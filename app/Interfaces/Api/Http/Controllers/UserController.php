@@ -12,7 +12,9 @@ use App\Application\Services\User\Access\SignUpUserRequest;
 use App\Application\Services\User\Access\SignUpUserService;
 use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
+use App\Application\Services\User\Access\GetAllUsers;
 use Config;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * Class UserController
@@ -57,11 +59,13 @@ class UserController extends ApiController
 	 * @param SignUpUserService $signUpUserService
 	 * @param CreateUserService $createUserService
 	 * @param GetUserByService $getUserBy
+	 * @param GetAllUsers $getAllUsers
 	 */
 	public function __construct(
 		LoginUserRequest $loginUserRequest, SignUpUserRequest $signUpUserRequest,
 		LogInUserService $logInUserService, LogOutUserService $logOutUserService,
-		SignUpUserService $signUpUserService, CreateUserService $createUserService, GetUserByService $getUserBy
+		SignUpUserService $signUpUserService, CreateUserService $createUserService,
+		GetUserByService $getUserBy
 	)
 	{
 		$this->loginUserRequest 	= $loginUserRequest;
@@ -146,10 +150,25 @@ class UserController extends ApiController
 	 * @param Request $request
 	 * @return mixed
 	 */
+	public function index(Request $request)
+	{
+		return $this->getUserBy->execute($request);
+	}
+
+	/**
+	 * @param Request $request
+	 * @return mixed
+	 */
 	public function getByFilter(Request $request)
 	{
 		$criteria = $request->only(['filter']);
 		return $this->getUserBy->execute($criteria['filter']);
+	}
+
+	public function me()
+	{
+		$result = JWTAuth::parseToken()->authenticate();
+		return $result;
 	}
 	#endregion
 

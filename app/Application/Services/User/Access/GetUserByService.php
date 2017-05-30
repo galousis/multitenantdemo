@@ -8,6 +8,7 @@ use App\Application\Services\DataTransformer\User\UserDataTransformer;
 use Illuminate\Support\Facades\Request;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Application\Exceptions\GetUserByServiceException;
+use Exception;
 
 /**
  * Class GetBy
@@ -61,7 +62,7 @@ class GetUserByService implements ApplicationService
 			}
 
 
-		}catch (\Exception $e){
+		}catch (Exception $e){
 			throw new GetUserByServiceException($e->getMessage());
 		}
 	}

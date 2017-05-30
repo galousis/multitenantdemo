@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.4.21 on 2017-05-09.
+ * Generated for Laravel 5.4.21 on 2017-05-30.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -6276,6 +6276,35 @@ namespace Illuminate\Support\Facades {
         
     }         
 
+    class Redis {
+        
+        /**
+         * Get a Redis connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @static 
+         */
+        public static function connection($name = null)
+        {
+            return \Illuminate\Redis\RedisManager::connection($name);
+        }
+        
+        /**
+         * Resolve the given connection by name.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Redis\Connections\Connection 
+         * @throws \InvalidArgumentException
+         * @static 
+         */
+        public static function resolve($name = null)
+        {
+            return \Illuminate\Redis\RedisManager::resolve($name);
+        }
+        
+    }         
+
     class Request {
         
         /**
@@ -11447,6 +11476,727 @@ namespace Illuminate\Support\Facades {
     
 namespace LaravelDoctrine\ORM\Facades {
 
+    class EntityManager {
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getConnection()
+        {
+            return \Doctrine\ORM\EntityManager::getConnection();
+        }
+        
+        /**
+         * Gets the metadata factory used to gather the metadata of classes.
+         *
+         * @return \Doctrine\ORM\Mapping\ClassMetadataFactory 
+         * @static 
+         */
+        public static function getMetadataFactory()
+        {
+            return \Doctrine\ORM\EntityManager::getMetadataFactory();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getExpressionBuilder()
+        {
+            return \Doctrine\ORM\EntityManager::getExpressionBuilder();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function beginTransaction()
+        {
+            return \Doctrine\ORM\EntityManager::beginTransaction();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getCache()
+        {
+            return \Doctrine\ORM\EntityManager::getCache();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function transactional($func)
+        {
+            return \Doctrine\ORM\EntityManager::transactional($func);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function commit()
+        {
+            return \Doctrine\ORM\EntityManager::commit();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function rollback()
+        {
+            return \Doctrine\ORM\EntityManager::rollback();
+        }
+        
+        /**
+         * Returns the ORM metadata descriptor for a class.
+         * 
+         * The class name must be the fully-qualified class name without a leading backslash
+         * (as it is returned by get_class($obj)) or an aliased class name.
+         * 
+         * Examples:
+         * MyProject\Domain\User
+         * sales:PriceRequest
+         * 
+         * Internal note: Performance-sensitive method.
+         *
+         * @param string $className
+         * @return \Doctrine\ORM\Mapping\ClassMetadata 
+         * @static 
+         */
+        public static function getClassMetadata($className)
+        {
+            return \Doctrine\ORM\EntityManager::getClassMetadata($className);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function createQuery($dql = '')
+        {
+            return \Doctrine\ORM\EntityManager::createQuery($dql);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function createNamedQuery($name)
+        {
+            return \Doctrine\ORM\EntityManager::createNamedQuery($name);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function createNativeQuery($sql, $rsm)
+        {
+            return \Doctrine\ORM\EntityManager::createNativeQuery($sql, $rsm);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function createNamedNativeQuery($name)
+        {
+            return \Doctrine\ORM\EntityManager::createNamedNativeQuery($name);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function createQueryBuilder()
+        {
+            return \Doctrine\ORM\EntityManager::createQueryBuilder();
+        }
+        
+        /**
+         * Flushes all changes to objects that have been queued up to now to the database.
+         * 
+         * This effectively synchronizes the in-memory state of managed objects with the
+         * database.
+         * 
+         * If an entity is explicitly passed to this method only this entity and
+         * the cascade-persist semantics + scheduled inserts/removals are synchronized.
+         *
+         * @param null|object|array $entity
+         * @return void 
+         * @throws \Doctrine\ORM\OptimisticLockException If a version check on an entity that
+         *         makes use of optimistic locking fails.
+         * @static 
+         */
+        public static function flush($entity = null)
+        {
+            \Doctrine\ORM\EntityManager::flush($entity);
+        }
+        
+        /**
+         * Finds an Entity by its identifier.
+         *
+         * @param string $entityName The class name of the entity to find.
+         * @param mixed $id The identity of the entity to find.
+         * @param integer|null $lockMode One of the \Doctrine\DBAL\LockMode::* constants
+         *                                  or NULL if no specific lock mode should be used
+         *                                  during the search.
+         * @param integer|null $lockVersion The version of the entity to find when using
+         *                                  optimistic locking.
+         * @return object|null The entity instance or NULL if the entity can not be found.
+         * @throws OptimisticLockException
+         * @throws ORMInvalidArgumentException
+         * @throws TransactionRequiredException
+         * @throws ORMException
+         * @static 
+         */
+        public static function find($entityName, $id, $lockMode = null, $lockVersion = null)
+        {
+            return \Doctrine\ORM\EntityManager::find($entityName, $id, $lockMode, $lockVersion);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getReference($entityName, $id)
+        {
+            return \Doctrine\ORM\EntityManager::getReference($entityName, $id);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getPartialReference($entityName, $identifier)
+        {
+            return \Doctrine\ORM\EntityManager::getPartialReference($entityName, $identifier);
+        }
+        
+        /**
+         * Clears the EntityManager. All entities that are currently managed
+         * by this EntityManager become detached.
+         *
+         * @param string|null $entityName if given, only entities of this type will get detached
+         * @return void 
+         * @static 
+         */
+        public static function clear($entityName = null)
+        {
+            \Doctrine\ORM\EntityManager::clear($entityName);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function close()
+        {
+            return \Doctrine\ORM\EntityManager::close();
+        }
+        
+        /**
+         * Tells the EntityManager to make an instance managed and persistent.
+         * 
+         * The entity will be entered into the database at or before transaction
+         * commit or as a result of the flush operation.
+         * 
+         * NOTE: The persist operation always considers entities that are not yet known to
+         * this EntityManager as NEW. Do not pass detached entities to the persist operation.
+         *
+         * @param object $entity The instance to make managed and persistent.
+         * @return void 
+         * @throws ORMInvalidArgumentException
+         * @static 
+         */
+        public static function persist($entity)
+        {
+            \Doctrine\ORM\EntityManager::persist($entity);
+        }
+        
+        /**
+         * Removes an entity instance.
+         * 
+         * A removed entity will be removed from the database at or before transaction commit
+         * or as a result of the flush operation.
+         *
+         * @param object $entity The entity instance to remove.
+         * @return void 
+         * @throws ORMInvalidArgumentException
+         * @static 
+         */
+        public static function remove($entity)
+        {
+            \Doctrine\ORM\EntityManager::remove($entity);
+        }
+        
+        /**
+         * Refreshes the persistent state of an entity from the database,
+         * overriding any local changes that have not yet been persisted.
+         *
+         * @param object $entity The entity to refresh.
+         * @return void 
+         * @throws ORMInvalidArgumentException
+         * @static 
+         */
+        public static function refresh($entity)
+        {
+            \Doctrine\ORM\EntityManager::refresh($entity);
+        }
+        
+        /**
+         * Detaches an entity from the EntityManager, causing a managed entity to
+         * become detached.  Unflushed changes made to the entity if any
+         * (including removal of the entity), will not be synchronized to the database.
+         * 
+         * Entities which previously referenced the detached entity will continue to
+         * reference it.
+         *
+         * @param object $entity The entity to detach.
+         * @return void 
+         * @throws ORMInvalidArgumentException
+         * @static 
+         */
+        public static function detach($entity)
+        {
+            \Doctrine\ORM\EntityManager::detach($entity);
+        }
+        
+        /**
+         * Merges the state of a detached entity into the persistence context
+         * of this EntityManager and returns the managed copy of the entity.
+         * 
+         * The entity passed to merge will not become associated/managed with this EntityManager.
+         *
+         * @param object $entity The detached entity to merge into the persistence context.
+         * @return object The managed copy of the entity.
+         * @throws ORMInvalidArgumentException
+         * @static 
+         */
+        public static function merge($entity)
+        {
+            return \Doctrine\ORM\EntityManager::merge($entity);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @todo Implementation need. This is necessary since $e2 = clone $e1; throws an E_FATAL when access anything on $e:
+         * Fatal error: Maximum function nesting level of '100' reached, aborting!
+         * @static 
+         */
+        public static function copy($entity, $deep = false)
+        {
+            return \Doctrine\ORM\EntityManager::copy($entity, $deep);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function lock($entity, $lockMode, $lockVersion = null)
+        {
+            return \Doctrine\ORM\EntityManager::lock($entity, $lockMode, $lockVersion);
+        }
+        
+        /**
+         * Gets the repository for an entity class.
+         *
+         * @param string $entityName The name of the entity.
+         * @return \Doctrine\ORM\EntityRepository The repository class.
+         * @static 
+         */
+        public static function getRepository($entityName)
+        {
+            return \Doctrine\ORM\EntityManager::getRepository($entityName);
+        }
+        
+        /**
+         * Determines whether an entity instance is managed in this EntityManager.
+         *
+         * @param object $entity
+         * @return boolean TRUE if this EntityManager currently manages the given entity, FALSE otherwise.
+         * @static 
+         */
+        public static function contains($entity)
+        {
+            return \Doctrine\ORM\EntityManager::contains($entity);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getEventManager()
+        {
+            return \Doctrine\ORM\EntityManager::getEventManager();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getConfiguration()
+        {
+            return \Doctrine\ORM\EntityManager::getConfiguration();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function isOpen()
+        {
+            return \Doctrine\ORM\EntityManager::isOpen();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getUnitOfWork()
+        {
+            return \Doctrine\ORM\EntityManager::getUnitOfWork();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getHydrator($hydrationMode)
+        {
+            return \Doctrine\ORM\EntityManager::getHydrator($hydrationMode);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function newHydrator($hydrationMode)
+        {
+            return \Doctrine\ORM\EntityManager::newHydrator($hydrationMode);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getProxyFactory()
+        {
+            return \Doctrine\ORM\EntityManager::getProxyFactory();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function initializeObject($obj)
+        {
+            return \Doctrine\ORM\EntityManager::initializeObject($obj);
+        }
+        
+        /**
+         * Factory method to create EntityManager instances.
+         *
+         * @param mixed $conn An array with the connection parameters or an existing Connection instance.
+         * @param \Doctrine\ORM\Configuration $config The Configuration instance to use.
+         * @param \Doctrine\ORM\EventManager $eventManager The EventManager instance to use.
+         * @return \EntityManager The created EntityManager.
+         * @throws \InvalidArgumentException
+         * @throws ORMException
+         * @static 
+         */
+        public static function create($conn, $config, $eventManager = null)
+        {
+            return \Doctrine\ORM\EntityManager::create($conn, $config, $eventManager);
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function getFilters()
+        {
+            return \Doctrine\ORM\EntityManager::getFilters();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function isFiltersStateClean()
+        {
+            return \Doctrine\ORM\EntityManager::isFiltersStateClean();
+        }
+        
+        /**
+         * {@inheritDoc}
+         *
+         * @static 
+         */
+        public static function hasFilters()
+        {
+            return \Doctrine\ORM\EntityManager::hasFilters();
+        }
+        
+    }         
+
+    class Registry {
+        
+        /**
+         * 
+         *
+         * @param $manager
+         * @param array $settings
+         * @static 
+         */
+        public static function addManager($manager, $settings = array())
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::addManager($manager, $settings);
+        }
+        
+        /**
+         * 
+         *
+         * @param $connection
+         * @param array $settings
+         * @static 
+         */
+        public static function addConnection($connection, $settings = array())
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::addConnection($connection, $settings);
+        }
+        
+        /**
+         * Gets the default connection name.
+         *
+         * @return string The default connection name.
+         * @static 
+         */
+        public static function getDefaultConnectionName()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getDefaultConnectionName();
+        }
+        
+        /**
+         * Gets the named connection.
+         *
+         * @param string $name The connection name (null for the default one).
+         * @return object 
+         * @static 
+         */
+        public static function getConnection($name = null)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getConnection($name);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */
+        public static function connectionExists($name)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::connectionExists($name);
+        }
+        
+        /**
+         * Gets an array of all registered connections.
+         *
+         * @return array An array of Connection instances.
+         * @static 
+         */
+        public static function getConnections()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getConnections();
+        }
+        
+        /**
+         * Gets all connection names.
+         *
+         * @return array An array of connection names.
+         * @static 
+         */
+        public static function getConnectionNames()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getConnectionNames();
+        }
+        
+        /**
+         * Gets the default object manager name.
+         *
+         * @return string The default object manager name.
+         * @static 
+         */
+        public static function getDefaultManagerName()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getDefaultManagerName();
+        }
+        
+        /**
+         * Gets a named object manager.
+         *
+         * @param string $name The object manager name (null for the default one).
+         * @return \Doctrine\Common\Persistence\ObjectManager 
+         * @static 
+         */
+        public static function getManager($name = null)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getManager($name);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */
+        public static function managerExists($name)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::managerExists($name);
+        }
+        
+        /**
+         * Gets all connection names.
+         *
+         * @return array An array of connection names.
+         * @static 
+         */
+        public static function getManagerNames()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getManagerNames();
+        }
+        
+        /**
+         * Gets an array of all registered object managers.
+         *
+         * @return \Doctrine\Common\Persistence\ObjectManager[] An array of ObjectManager instances
+         * @static 
+         */
+        public static function getManagers()
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getManagers();
+        }
+        
+        /**
+         * Resets a named object manager.
+         * 
+         * This method is useful when an object manager has been closed
+         * because of a rollbacked transaction AND when you think that
+         * it makes sense to get a new one to replace the closed one.
+         * Be warned that you will get a brand new object manager as
+         * the existing one is not useable anymore. This means that any
+         * other object with a dependency on this object manager will
+         * hold an obsolete reference. You can inject the registry instead
+         * to avoid this problem.
+         *
+         * @param string|null $name The object manager name (null for the default one).
+         * @return \Doctrine\Common\Persistence\ObjectManager 
+         * @static 
+         */
+        public static function resetManager($name = null)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::resetManager($name);
+        }
+        
+        /**
+         * Resolves a registered namespace alias to the full namespace.
+         * 
+         * This method looks for the alias in all registered object managers.
+         *
+         * @param string $alias The alias.
+         * @throws ORMException
+         * @return string The full namespace.
+         * @static 
+         */
+        public static function getAliasNamespace($alias)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getAliasNamespace($alias);
+        }
+        
+        /**
+         * Gets the ObjectRepository for an persistent object.
+         *
+         * @param string $persistentObject The name of the persistent object.
+         * @param string $persistentManagerName The object manager name (null for the default one).
+         * @return \Doctrine\Common\Persistence\ObjectRepository 
+         * @static 
+         */
+        public static function getRepository($persistentObject, $persistentManagerName = null)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getRepository($persistentObject, $persistentManagerName);
+        }
+        
+        /**
+         * Gets the object manager associated with a given class.
+         *
+         * @param string $class A persistent object class name.
+         * @return \Doctrine\Common\Persistence\ObjectManager|null 
+         * @static 
+         */
+        public static function getManagerForClass($class)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::getManagerForClass($class);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $defaultManager
+         * @static 
+         */
+        public static function setDefaultManager($defaultManager)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::setDefaultManager($defaultManager);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $defaultConnection
+         * @static 
+         */
+        public static function setDefaultConnection($defaultConnection)
+        {
+            return \LaravelDoctrine\ORM\IlluminateRegistry::setDefaultConnection($defaultConnection);
+        }
+        
+    }         
+
     class Doctrine {
         
         /**
@@ -11546,6 +12296,223 @@ namespace LaravelDoctrine\ORM\Facades {
     }         
 }
     
+namespace GrahamCampbell\Throttle\Facades {
+
+    class Throttle {
+        
+        /**
+         * Get a new throttler.
+         *
+         * @param array|\Illuminate\Http\Request $data
+         * @param int $limit
+         * @param int $time
+         * @return \GrahamCampbell\Throttle\Throttlers\ThrottlerInterface 
+         * @static 
+         */
+        public static function get($data, $limit = 10, $time = 60)
+        {
+            return \GrahamCampbell\Throttle\Throttle::get($data, $limit, $time);
+        }
+        
+        /**
+         * Get the cache instance.
+         *
+         * @return \GrahamCampbell\Throttle\Factories\FactoryInterface 
+         * @static 
+         */
+        public static function getFactory()
+        {
+            return \GrahamCampbell\Throttle\Throttle::getFactory();
+        }
+        
+        /**
+         * Get the transformer instance.
+         *
+         * @codeCoverageIgnore 
+         * @return \GrahamCampbell\Throttle\Transformers\TransformerFactory 
+         * @static 
+         */
+        public static function getTransformer()
+        {
+            return \GrahamCampbell\Throttle\Throttle::getTransformer();
+        }
+        
+    }         
+}
+    
+namespace Tymon\JWTAuth\Facades {
+
+    class JWTAuth {
+        
+        /**
+         * Find a user using the user identifier in the subject claim.
+         *
+         * @param bool|string $token
+         * @return mixed 
+         * @static 
+         */
+        public static function toUser($token = false)
+        {
+            return \Tymon\JWTAuth\JWTAuth::toUser($token);
+        }
+        
+        /**
+         * Generate a token using the user identifier as the subject claim.
+         *
+         * @param mixed $user
+         * @param array $customClaims
+         * @return string 
+         * @static 
+         */
+        public static function fromUser($user, $customClaims = array())
+        {
+            return \Tymon\JWTAuth\JWTAuth::fromUser($user, $customClaims);
+        }
+        
+        /**
+         * Attempt to authenticate the user and return the token.
+         *
+         * @param array $credentials
+         * @param array $customClaims
+         * @return false|string 
+         * @static 
+         */
+        public static function attempt($credentials = array(), $customClaims = array())
+        {
+            return \Tymon\JWTAuth\JWTAuth::attempt($credentials, $customClaims);
+        }
+        
+        /**
+         * Authenticate a user via a token.
+         *
+         * @param mixed $token
+         * @return mixed 
+         * @static 
+         */
+        public static function authenticate($token = false)
+        {
+            return \Tymon\JWTAuth\JWTAuth::authenticate($token);
+        }
+        
+        /**
+         * Refresh an expired token.
+         *
+         * @param mixed $token
+         * @return string 
+         * @static 
+         */
+        public static function refresh($token = false)
+        {
+            return \Tymon\JWTAuth\JWTAuth::refresh($token);
+        }
+        
+        /**
+         * Invalidate a token (add it to the blacklist).
+         *
+         * @param mixed $token
+         * @return bool 
+         * @static 
+         */
+        public static function invalidate($token = false)
+        {
+            return \Tymon\JWTAuth\JWTAuth::invalidate($token);
+        }
+        
+        /**
+         * Get the token.
+         *
+         * @return bool|string 
+         * @static 
+         */
+        public static function getToken()
+        {
+            return \Tymon\JWTAuth\JWTAuth::getToken();
+        }
+        
+        /**
+         * Get the raw Payload instance.
+         *
+         * @param mixed $token
+         * @return \Tymon\JWTAuth\Payload 
+         * @static 
+         */
+        public static function getPayload($token = false)
+        {
+            return \Tymon\JWTAuth\JWTAuth::getPayload($token);
+        }
+        
+        /**
+         * Parse the token from the request.
+         *
+         * @param string $query
+         * @return \JWTAuth 
+         * @static 
+         */
+        public static function parseToken($method = 'bearer', $header = 'authorization', $query = 'token')
+        {
+            return \Tymon\JWTAuth\JWTAuth::parseToken($method, $header, $query);
+        }
+        
+        /**
+         * Set the identifier.
+         *
+         * @param string $identifier
+         * @return $this 
+         * @static 
+         */
+        public static function setIdentifier($identifier)
+        {
+            return \Tymon\JWTAuth\JWTAuth::setIdentifier($identifier);
+        }
+        
+        /**
+         * Get the identifier.
+         *
+         * @return string 
+         * @static 
+         */
+        public static function getIdentifier()
+        {
+            return \Tymon\JWTAuth\JWTAuth::getIdentifier();
+        }
+        
+        /**
+         * Set the token.
+         *
+         * @param string $token
+         * @return $this 
+         * @static 
+         */
+        public static function setToken($token)
+        {
+            return \Tymon\JWTAuth\JWTAuth::setToken($token);
+        }
+        
+        /**
+         * Set the request instance.
+         *
+         * @param \Request $request
+         * @static 
+         */
+        public static function setRequest($request)
+        {
+            return \Tymon\JWTAuth\JWTAuth::setRequest($request);
+        }
+        
+        /**
+         * Get the JWTManager instance.
+         *
+         * @return \Tymon\JWTAuth\JWTManager 
+         * @static 
+         */
+        public static function manager()
+        {
+            return \Tymon\JWTAuth\JWTAuth::manager();
+        }
+        
+    }         
+}
+    
     
 namespace {
 
@@ -11592,6 +12559,8 @@ namespace {
     class Queue extends \Illuminate\Support\Facades\Queue {}
     
     class Redirect extends \Illuminate\Support\Facades\Redirect {}
+    
+    class Redis extends \Illuminate\Support\Facades\Redis {}
     
     class Request extends \Illuminate\Support\Facades\Request {}
     
@@ -13584,7 +14553,15 @@ namespace {
         }
         }
     
+    class EntityManager extends \LaravelDoctrine\ORM\Facades\EntityManager {}
+    
+    class Registry extends \LaravelDoctrine\ORM\Facades\Registry {}
+    
     class Doctrine extends \LaravelDoctrine\ORM\Facades\Doctrine {}
+    
+    class Throttle extends \GrahamCampbell\Throttle\Facades\Throttle {}
+    
+    class JWTAuth extends \Tymon\JWTAuth\Facades\JWTAuth {}
     
 }
 

@@ -67,14 +67,17 @@ export default {
 
 function pretendRequest(email, pass, cb) {
     setTimeout(() => {
-        Vue.http.post('/api/auth/login', {
+        Vue.http.post('/api/v1/auth/login', {
             email: email,
             password: pass
         }).then((response) => {
-            if (response.data.token) {
+
+            console.log(response.data.data.jwt);
+
+            if (response.data.data.jwt) {
                 cb({
                     authenticated: true,
-                    token: response.data.token
+                    token: response.data.data.jwt
                 })
             } else {
                 console.error('token not retrived')

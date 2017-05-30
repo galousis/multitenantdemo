@@ -10,17 +10,7 @@
             <tabs>
                 <tab name="Users" title="Users" active=true>
                     <div id="users">
-                        <v-server-table url="/api/users" :columns="columns" :options="options"></v-server-table>
-                    </div>
-                </tab>
-                <tab name="Roles" title="Roles">
-                    <div id="roles">
-                        <v-server-table url="/api/roles" :columns="columns" :options="options"></v-server-table>
-                    </div>
-                </tab>
-                <tab name="Permissions" title="Permissions">
-                    <div id="permissions">
-                        <v-server-table url="/api/permissions" :columns="columns" :options="options"></v-server-table>
+                        <v-server-table url="/api/v1/users" :columns="columns" :options="options"></v-server-table>
                     </div>
                 </tab>
             </tabs>

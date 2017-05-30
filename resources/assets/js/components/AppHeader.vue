@@ -62,8 +62,13 @@
         },
         methods:{
             getUserData:function () {
-                Vue.http.post('/api/auth/me').then((response) => {
-              this.user =  response.json().user;
+                Vue.http.post('/api/v1/auth/me').then((response) => {
+
+                    console.log(response);
+
+                    console.log(response.json());
+
+              this.user =  response.json();
                 }, (response) => {
                     return false;
                 });
