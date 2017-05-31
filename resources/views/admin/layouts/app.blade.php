@@ -10,6 +10,16 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+
+    {{--<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">--}}
+    {{--<link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet" type="text/css">--}}
+
     <!-- Styles -->
     <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
     <link rel="stylesheet" type="text/css"

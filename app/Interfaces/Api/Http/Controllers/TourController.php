@@ -87,7 +87,9 @@ class TourController extends ApiController
 			array('id'=>12, 'name'=>'Tour12')
 		);
 
-		return JsonResponseDefault::create(true, $data, 'tours retrieved successfully', 200);
+//		return JsonResponseDefault::create(true, $data, 'tours retrieved successfully', 200);
+
+		return $data;
 
 		//return $this->getTourBy->execute($request);
 	}

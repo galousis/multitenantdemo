@@ -18,7 +18,7 @@
         },
         data(){
             return {
-                message: "Copyright © 2014-2015 PPP Studio. All rights reserved."
+                message: "demo"
             }
 
         }
