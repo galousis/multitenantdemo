@@ -12,7 +12,6 @@ use App\Application\Services\User\Access\SignUpUserRequest;
 use App\Application\Services\User\Access\SignUpUserService;
 use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
-use App\Application\Services\User\Access\GetAllUsers;
 use Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
