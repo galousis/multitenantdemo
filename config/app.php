@@ -53,6 +53,13 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+	'url' => env('GR_DOMAIN', 'http://localhost'),
+
+	'url' => env('UK_DOMAIN', 'http://localhost'),
+
+	'url' => env('US_DOMAIN', 'http://localhost'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

@@ -32,19 +32,48 @@ Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5',
 	Route::resource('users', 'UserController', array('only' => array('index')));
 //	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
 
-	//Destinations
+
+	Route::group(['domain' => config('GR_DOMAIN')], function(){
+
+		//Destinations
 //	Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@findAll']);
 //	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
 //	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
 
-	//Tours
+		//Tours
 //	Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@findAll']);
 //	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
 //	Route::resource('tours', 'TourController', array('only' => array('index')));
 
-	//tours destinations
+		//tours destinations
 //	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
 //	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
+
+
+	});
+
+	Route::group(['domain' => 'UK_DOMAIN'], function(){
+
+		//Destinations
+//	Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@findAll']);
+//	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
+//	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
+
+		//Tours
+//	Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@findAll']);
+//	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
+//	Route::resource('tours', 'TourController', array('only' => array('index')));
+
+		//tours destinations
+//	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
+//	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
+
+
+	});
+
+
+
+
 
 
 });
