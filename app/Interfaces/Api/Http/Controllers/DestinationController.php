@@ -73,6 +73,18 @@ class DestinationController extends ApiController
 	 */
 	public function index(Request $request)
 	{
+
+		$data = array(
+			array('id'=>1, 'name'=>'Thessaloniki'),
+			array('id'=>2, 'name'=>'Chania'),
+			array('id'=>3, 'name'=>'Giannena'),
+			array('id'=>4, 'name'=>'Patra'),
+			array('id'=>5, 'name'=>'Santorini'),
+			array('id'=>6, 'name'=>'Rodos')
+		);
+
+		return JsonResponseDefault::create(true, $data, 'destinations retrieved successfully', 200);
+
 		//return $this->getDestinationBy->execute($request);
 	}
 

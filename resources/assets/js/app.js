@@ -18,8 +18,9 @@ import Login from "./components/Auth/Login.vue";
 import Register from "./components/Auth/Register.vue";
 import ForgotPassword from "./components/Auth/ForgotPassword.vue";
 import Users from "./components/Users.vue";
-import Passport from "./components/passport/Index.vue";
-
+//import Passport from "./components/passport/Index.vue";
+import Destinations from "./components/Destinations/Index.vue";
+import Tours from "./components/Tours/Index.vue";
 
 var VueResource = require('vue-resource');
 var VueTables = require('vue-tables-2');
@@ -70,7 +71,8 @@ const router = new VueRouter({
 
                 // components rendered at /parent/foo: Root -> Parent -> Foo
                 {path: 'users', component: Users},
-                {path: 'passport', component: Passport},
+                {path: 'destinations', component: Destinations},
+                {path: 'tours', component: Tours},
 
                 // components rendered at /parent/bar: Root -> Parent -> Bar
                 {path: 'bar', component: Bar},

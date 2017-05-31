@@ -151,7 +151,9 @@ class UserController extends ApiController
 	 */
 	public function index(Request $request)
 	{
-		return $this->getUserBy->execute($request);
+		$r = $this->getUserBy->execute($request);
+
+		return $r;
 	}
 
 	/**
