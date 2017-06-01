@@ -42,7 +42,7 @@ class DestinationMapping extends EntityMapping
 		// This will result in an autoincremented integer
 		$builder->increments('id');
 
-		$builder->manyToMany(Tour::class, 'destinations');
+		$builder->hasMany(Tour::class, 'tours')->ownedBy('destination');
 
 		// Both strings will be varchars
 		$builder->string('title')->nullable();

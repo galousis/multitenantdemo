@@ -19,13 +19,16 @@ class DestinationsTableSeeder extends Seeder
 
 		$faker = Faker\Factory::create();
 
+		$input = array("US", "UK", "GR");
+
 		for ($x = 0; $x <= 10; $x++) {
 
-			DB::table('users')->insert([
+			DB::table('destinations')->insert([
 				'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-				'country' => $faker->countryCode,
+				'country' => $input[rand( 0 , 2)],
 				'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
-				'photos' => $faker->countryCode,
+				'lat' => $faker->latitude,
+				'lng' => $faker->longitude,
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
 			]);

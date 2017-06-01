@@ -26,6 +26,8 @@ return [
             'meta'          => env('DOCTRINE_METADATA', 'fluent'),
 			'mappings' => [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
+				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
 			],
             'connection'    => env('DB_CONNECTION', 'mysql'),
             'namespaces'    => [

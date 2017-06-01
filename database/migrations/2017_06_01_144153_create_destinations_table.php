@@ -18,7 +18,7 @@ class CreateDestinationsTable extends Migration
 			$table->increments('id');
 			$table->string('title')->default('')->comment('Destination title');
 			$table->string('country', 3)->default('')->comment('Destination country');
-			$table->string('description')->default('')->comment('Destination description');
+			$table->text('description')->comment('Destination description');
 			$table->float('lat', 10, 6)->nullable();
 			$table->float('lng', 10, 6)->nullable();
 			$table->timestamps();

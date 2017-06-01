@@ -41,7 +41,7 @@ class TourMapping extends EntityMapping
 
 		// This will result in an autoincremented integer
 		$builder->increments('id');
-		$builder->manyToMany(Destination::class, 'tours');
+		$builder->hasMany(Destination::class, 'destinations')->ownedBy('tour');
 		// Both strings will be varchars
 		$builder->string('tourcode');
 		$builder->string('title');
