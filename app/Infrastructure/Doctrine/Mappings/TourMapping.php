@@ -2,6 +2,7 @@
 namespace App\Infrastructure\Doctrine\Mappings;
 
 use App\Domain\Tour\Entities\Tour;
+use App\Domain\Destination\Entities\Destination;
 use LaravelDoctrine\Fluent\EntityMapping;
 use LaravelDoctrine\Fluent\Fluent;
 
@@ -38,16 +39,16 @@ class TourMapping extends EntityMapping
 		* We could also do `bigIncrements('id')` or the whole `integer('id')->primary()->unsigned()->autoIncrement()`
 		*/
 
-//		// This will result in an autoincremented integer
-//		$builder->increments('id');
-//
-//		// Both strings will be varchars
-//		$builder->string('name')->nullable();
-//		$builder->string('email')->nullable();
-//		$builder->string('password')->nullable();
-//		$builder->string('rememberToken')->nullable();
-//		$builder->string('createdAt')->nullable();
-//		$builder->string('updatedAt')->nullable();
+		// This will result in an autoincremented integer
+		$builder->increments('id');
+		$builder->manyToMany(Destination::class, 'tours');
+		// Both strings will be varchars
+		$builder->string('tourcode');
+		$builder->string('title');
+		$builder->string('description');
+		$builder->string('duration');
+		$builder->string('createdAt')->nullable();
+		$builder->string('updatedAt')->nullable();
 
 	}
 }

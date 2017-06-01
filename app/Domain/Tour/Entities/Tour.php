@@ -2,6 +2,8 @@
 namespace App\Domain\Tour\Entities;
 
 use App\Domain\Tour\ValueObjects\TourId;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Destination\Entities\Destination;
 use Carbon\Carbon;
 
 /**
@@ -33,24 +35,14 @@ class Tour
 	private $description;
 
 	/**
-	 * @var string
+	 * @var \DateTime
 	 */
-	private $country;
-
-	/**
-	 * @var string
-	 */
-	private $departure;
+	private $departure = 'CURRENT_TIMESTAMP';
 
 	/**
 	 * @var string
 	 */
 	private $duration;
-
-	/**
-	 * @var string
-	 */
-	private $destinations;
 
 	/**
 	 * @var \DateTime
@@ -61,6 +53,9 @@ class Tour
 	 * @var \DateTime
 	 */
 	private $updatedAt = 'CURRENT_TIMESTAMP';
+
+	/** @var  ArrayCollection */
+	protected $destinations;
 	#endregion
 
 	#region constructor
@@ -73,17 +68,28 @@ class Tour
 		$this->id = isset($data['id']) ? $data['id'] : null;
 		$this->setTourCode($data['tourcode']);
 		$this->setTitle($data['name']);
-		$this->setCountry($data['country']);
 		$this->setDescription($data['description']);
 		$this->setDeparture($data['departure']);
 		$this->setDuration($data['duration']);
-		$this->setDestinations($data['destinations']);
 		$this->setCreatedAt();
 		$this->setUpdatedAt();
+
+		$this->destinations = new ArrayCollection;
 	}
 	#endregion
 
 	#region Setters
+	/**
+	 * @param Destination $destination
+	 */
+	public function addDestination(Destination $destination)
+	{
+		if(!$this->destinations->contains($destination)) {
+			$destination->setTour($this);
+			$this->destinations->add($destination);
+		}
+	}
+
 	/**
 	 * @param string $tourcode
 	 */
@@ -98,14 +104,6 @@ class Tour
 	public function setTitle($title)
 	{
 		$this->title = $title;
-	}
-
-	/**
-	 * @param string $country
-	 */
-	public function setCountry($country)
-	{
-		$this->country = $country;
 	}
 
 	/**
@@ -131,14 +129,6 @@ class Tour
 	{
 		$this->duration = $duration;
 	}
-
-	/**
-	 * @param string $destinations
-	 */
-	public function setDestinations($destinations)
-	{
-		$this->destinations = $destinations;
-	}
 	#endregion
 
 	#region Getters
@@ -148,14 +138,6 @@ class Tour
 	public function getTitle()
 	{
 		return $this->title;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCountry()
-	{
-		return $this->country;
 	}
 
 	/**
@@ -180,14 +162,6 @@ class Tour
 	public function getDuration()
 	{
 		return $this->duration;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getDestinations()
-	{
-		return $this->destinations;
 	}
 
 	/**

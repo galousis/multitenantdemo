@@ -2,6 +2,8 @@
 namespace App\Domain\Destination\Entities;
 
 use App\Domain\Destination\ValueObjects\DestinationId;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Tour\Entities\Tour;
 
 /**
  * Class Destination
@@ -34,11 +36,6 @@ class Destination
 	/**
 	 * @var string
 	 */
-	private $photos;
-
-	/**
-	 * @var string
-	 */
 	private $lat;
 
 	/**
@@ -55,6 +52,9 @@ class Destination
 	 * @var \DateTime
 	 */
 	private $updatedAt = 'CURRENT_TIMESTAMP';
+
+	/** @var  ArrayCollection */
+	protected $tours;
 	#endregion
 
 	#region constructor
@@ -68,15 +68,25 @@ class Destination
 		$this->setTitle($data['name']);
 		$this->setCountry($data['country']);
 		$this->setDescription($data['description']);
-		$this->setPhotos($data['photos']);
 		$this->setLat($data['lat']);
 		$this->setLng($data['lng']);
 		$this->setCreatedAt();
 		$this->setUpdatedAt();
+
+		$this->tours = new ArrayCollection;
 	}
 	#endregion
 
 	#region Setters
+
+	/**
+	 * @param Tour $tour
+	 */
+	public function setTour(Tour $tour)
+	{
+		$this->tours->add($tour);
+	}
+
 	/**
 	 * @param string $title
 	 */
@@ -102,11 +112,11 @@ class Destination
 	}
 
 	/**
-	 * @param string $photos
+	 * @return ArrayCollection
 	 */
-	public function setPhotos($photos)
+	public function getTour()
 	{
-		$this->photos = $photos;
+		return $this->tours;
 	}
 
 	/**
@@ -149,14 +159,6 @@ class Destination
 	public function getDescription()
 	{
 		return $this->description;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getPhotos()
-	{
-		return $this->photos;
 	}
 
 	/**
