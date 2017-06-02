@@ -28,6 +28,7 @@ return [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
 				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
 				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
 			],
             'connection'    => env('DB_CONNECTION', 'mysql'),
             'namespaces'    => [

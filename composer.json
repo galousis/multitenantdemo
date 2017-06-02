@@ -19,6 +19,7 @@
         "nesbot/carbon": "^1.22",
         "predis/predis": "^1.1",
         "ramsey/uuid": "^3.6",
+        "spatie/laravel-medialibrary": "^5.0.0",
         "tymon/jwt-auth": "^0.5.11"
     },
     "require-dev": {

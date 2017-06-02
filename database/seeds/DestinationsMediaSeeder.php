@@ -24,6 +24,10 @@ class DestinationsMediaSeeder extends Seeder
 		$allDest = $destRepo->findAll();
 
 		foreach ($allDest as $dest) {
+
+			/** @var Destination $destination */
+			$destination = $dest;
+
 			if(rand(1, 10) > 4){
 				$counter = 0;
 				// max retries = 5 because sometimes faker return false
@@ -32,9 +36,10 @@ class DestinationsMediaSeeder extends Seeder
 				}
 
 				if ($fakeImage !== false) {
-					//$post->addMedia($fakeImage)->preservingOriginal()->toCollectionOnDisk('featured', 'local-media');
+					$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local-media');
 				}
 			}
 		}
+
 	}
 }

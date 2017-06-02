@@ -42,7 +42,10 @@ return [
     */
 
     'disks' => [
-
+		'local-media' => [
+			'driver' => 'local',
+			'root'   => public_path().'/img/posts',
+		],
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),

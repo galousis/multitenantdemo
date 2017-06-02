@@ -4,6 +4,8 @@ namespace App\Domain\Destination\Entities;
 use App\Domain\Destination\ValueObjects\DestinationId;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Tour\Entities\Tour;
+use App\Infrastructure\Media\HasMedia\HasMediaTrait;
+use App\Infrastructure\Media\HasMedia\Interfaces\HasMedia;
 
 /**
  * Class Destination
@@ -11,12 +13,16 @@ use App\Domain\Tour\Entities\Tour;
  * @package App\Domain\Destination\Entities
  * @author thanos theodorakopoulos galousis@gmail.com
  */
-class Destination
+class Destination implements HasMedia
 {
+	use HasMediaTrait;
 
 	#region properties
 	/** @var DestinationId */
 	public $id;
+
+	/** @var string */
+	protected $modelType = 'App\\Domain\\Destination\\Entities\\Destination';
 
 	/**
 	 * @var string
@@ -137,6 +143,14 @@ class Destination
 	#endregion
 
 	#region Getters
+	/**
+	 * @return string
+	 */
+	public function getModelType()
+	{
+		return $this->modelType;
+	}
+
 	/**
 	 * @return string
 	 */
