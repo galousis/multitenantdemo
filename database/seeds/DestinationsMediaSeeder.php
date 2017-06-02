@@ -14,7 +14,7 @@ class DestinationsMediaSeeder extends Seeder
 	 */
 	public function run()
 	{
-		DB::table('media')->truncate();
+		//DB::table('media')->truncate();
 
 		$faker = Faker\Factory::create();
 
@@ -28,17 +28,16 @@ class DestinationsMediaSeeder extends Seeder
 			/** @var Destination $destination */
 			$destination = $dest;
 
-			if(rand(1, 10) > 4){
-				$counter = 0;
-				// max retries = 5 because sometimes faker return false
-				while (!($fakeImage = $faker->image(null, 600, 400)) && ($counter < 5)) {
-					$counter++;
-				}
-
-				if ($fakeImage !== false) {
-					$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local-media');
-				}
+			$counter = 0;
+			// max retries = 5 because sometimes faker return false
+			while (!($fakeImage = $faker->image(null, 600, 400)) && ($counter < 5)) {
+				$counter++;
 			}
+
+			if ($fakeImage !== false) {
+				$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local');
+			}
+
 		}
 
 	}

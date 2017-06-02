@@ -2,17 +2,17 @@
 namespace App\Infrastructure\Media\Conversion;
 
 use Illuminate\Support\Arr;
-use Spatie\MediaLibrary\Media;
+use App\Domain\Media\Entities\Media;
 use Spatie\Image\Manipulations;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Spatie\MediaLibrary\Exceptions\InvalidConversion;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use App\Infrastructure\Media\Exceptions\InvalidConversion;
+use App\Infrastructure\Media\HasMedia\Interfaces\HasMediaConversions;
 
 class ConversionCollection extends Collection
 {
     /**
-     * @param \Spatie\MediaLibrary\Media $media
+     * @param Media $media
      *
      * @return static
      */
@@ -22,7 +22,7 @@ class ConversionCollection extends Collection
     }
 
     /**
-     * @param \Spatie\MediaLibrary\Media $media
+     * @param Media $media
      *
      * @return $this
      */
@@ -44,7 +44,7 @@ class ConversionCollection extends Collection
      *
      * @return mixed
      *
-     * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
+     * @throws InvalidConversion
      */
     public function getByName(string $name)
     {
@@ -63,28 +63,30 @@ class ConversionCollection extends Collection
      * Add the conversion that are defined on the related model of
      * the given media.
      *
-     * @param \Spatie\MediaLibrary\Media $media
+     * @param Media $media
      */
     protected function addConversionsFromRelatedModel(Media $media)
     {
-        $modelName = Arr::get(Relation::morphMap(), $media->model_type, $media->model_type);
+        //$modelName = Arr::get(Relation::morphMap(), $media->getModelType(), $media->getModelType());
+
+		$modelName = 'App\\Domain\\Destination\\Entities\\Destination';
 
         /*
          * To prevent an sql query create a new model instead
          * of the using the associated one.
          */
-        $model = new $modelName();
+        $model = new $modelName(array());
 
         /*
          * In some cases the user might want to get the actual model
          * instance so conversion parameters can depend on model
          * properties. This will causes extra queries.
          */
-        if ($model->registerMediaConversionsUsingModelInstance) {
-            $model = $media->model;
-
-            $model->mediaConversion = [];
-        }
+//        if ($model->registerMediaConversionsUsingModelInstance) {
+//            $model = $media->model;
+//
+//            $model->mediaConversion = [];
+//        }
 
         if ($model instanceof HasMediaConversions) {
             $model->registerMediaConversions();
@@ -96,11 +98,11 @@ class ConversionCollection extends Collection
     /**
      * Add the extra manipulations that are defined on the given media.
      *
-     * @param \Spatie\MediaLibrary\Media $media
+     * @param Media $media
      */
     protected function addManipulationsFromDb(Media $media)
     {
-        collect($media->manipulations)->each(function ($manipulations, $conversionName) {
+        collect($media->getManipulations())->each(function ($manipulations, $conversionName) {
             $this->addManipulationToConversion(new Manipulations([$manipulations]), $conversionName);
         });
     }

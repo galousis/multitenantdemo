@@ -290,11 +290,11 @@ class FileAdder
         /** @var MediaRepositoryContract $repository */
 		$repository = $this->mediaService->getRepository();
 
+		#Save to DB
 		$repository->create($media);
 
-//        $media->fill($this->properties);
-//
-//        $this->attachMedia($media);
+		#Save to local disk
+        $this->attachMedia($media);
 
         return $media;
     }
@@ -350,21 +350,17 @@ class FileAdder
      */
     protected function attachMedia(Media $media)
     {
-        if (! $this->subject->exists) {
-            $this->subject->prepareToAttachMedia($media, $this);
+        //if (! $this->subject->exists)
 
-            $class = get_class($this->subject);
+		$this->subject->prepareToAttachMedia($media, $this);
 
-            $class::created(function ($model) {
-                $model->processUnattachedMedia(function (Media $media, FileAdder $fileAdder) use ($model) {
-                    $this->processMediaItem($model, $media, $fileAdder);
-                });
-            });
+		$model = $this->subject;
 
-            return;
-        }
+		$this->subject->processUnattachedMedia(function (Media $media, FileAdder $fileAdder) use ($model) {
+			$this->processMediaItem($model, $media, $fileAdder);
+		});
 
-        $this->processMediaItem($this->subject, $media, $this);
+		return;
     }
 
     /**
@@ -374,7 +370,6 @@ class FileAdder
      */
     protected function processMediaItem(HasMedia $model, Media $media, FileAdder $fileAdder)
     {
-        $model->media()->save($media);
 
         $this->filesystem->add($fileAdder->pathToFile, $media, $fileAdder->fileName);
 

@@ -27,6 +27,6 @@ class BasePathGenerator implements PathGenerator
      */
     protected function getBasePath(Media $media): string
     {
-        return $media->getKey();
+        return $media->getModelId();
     }
 }

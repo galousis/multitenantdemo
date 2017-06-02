@@ -70,12 +70,15 @@ class Destination implements HasMedia
 	 */
 	public function __construct($data)
 	{
-		$this->id = isset($data['id']) ? $data['id'] : null;
-		$this->setTitle($data['name']);
-		$this->setCountry($data['country']);
-		$this->setDescription($data['description']);
-		$this->setLat($data['lat']);
-		$this->setLng($data['lng']);
+		if ( count($data)>0 )
+		{
+			$this->id = isset($data['id']) ? $data['id'] : null;
+			$this->setTitle($data['name']);
+			$this->setCountry($data['country']);
+			$this->setDescription($data['description']);
+			$this->setLat($data['lat']);
+			$this->setLng($data['lng']);
+		}
 		$this->setCreatedAt();
 		$this->setUpdatedAt();
 

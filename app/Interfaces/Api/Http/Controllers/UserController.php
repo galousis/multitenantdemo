@@ -14,9 +14,6 @@ use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
 use Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Faker;
-use App\Domain\Destination\Contracts\DestinationRepositoryContract;
-use App\Domain\Destination\Entities\Destination;
 
 /**
  * Class UserController
@@ -48,9 +45,6 @@ class UserController extends ApiController
 
 	/** @var GetUserByService  */
 	public $getUserBy;
-
-	/** @var  DestinationRepositoryContract */
-	public $destRepo;
 	#endregion
 
 	#region Constructor
@@ -69,7 +63,7 @@ class UserController extends ApiController
 		LoginUserRequest $loginUserRequest, SignUpUserRequest $signUpUserRequest,
 		LogInUserService $logInUserService, LogOutUserService $logOutUserService,
 		SignUpUserService $signUpUserService, CreateUserService $createUserService,
-		GetUserByService $getUserBy, DestinationRepositoryContract $destRepo
+		GetUserByService $getUserBy
 	)
 	{
 		$this->loginUserRequest 	= $loginUserRequest;
@@ -79,8 +73,6 @@ class UserController extends ApiController
 		$this->signUpUserService 	= $signUpUserService;
 		$this->createUserService	= $createUserService;
 		$this->getUserBy			= $getUserBy;
-
-		$this->destRepo			= $destRepo;
 	}
 	#endregion
 
@@ -91,39 +83,6 @@ class UserController extends ApiController
 	 */
 	public function login(Request $request)
 	{
-
-
-//		$faker = Faker\Factory::create();
-//
-////		/** @var DestinationRepositoryContract $destRepo */
-////		$destRepo = app()->make('App\Domain\Destination\Contracts\DestinationRepositoryContract');
-//
-//		$allDest = $this->destRepo->findAll();
-//
-//		foreach ($allDest as $dest) {
-//
-//			/** @var Destination $destination */
-//			$destination = $dest;
-//
-//			if(rand(1, 10) > 4){
-//				$counter = 0;
-//				// max retries = 5 because sometimes faker return false
-//				while (!($fakeImage = $faker->image(null, 600, 400)) && ($counter < 5)) {
-//					$counter++;
-//				}
-//
-//				if ($fakeImage !== false) {
-//					$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local-media');
-//				}
-//			}
-//		}
-
-
-
-
-
-
-
 		$data = $request->only(['email','password']);
 
 		$this->loginUserRequest->setEmail($data['email']);

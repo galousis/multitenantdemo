@@ -36,7 +36,6 @@ class Media
 	/** @var int */
 	protected $size;
 
-	/** @var string */
 	protected $manipulations;
 
 	/** @var string */
@@ -208,6 +207,16 @@ class Media
 		return $this->modelType;
 	}
 
+	public function getDisk(): string
+	{
+		return $this->disk;
+	}
+
+	public function getManipulations()
+	{
+		return $this->manipulations;
+	}
+
 	public function getSize(): int
 	{
 		return $this->size;
@@ -375,7 +384,7 @@ class Media
 
 	public function getDiskDriverName(): string
 	{
-		return strtolower(config("filesystems.disks.{$this->getDiskDriverName()}.driver"));
+		return strtolower(config("filesystems.disks.{$this->getDisk()}.driver"));
 	}
 
 	/*
