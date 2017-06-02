@@ -24,6 +24,8 @@ return [
      * The class name of the media model to be used.
      */
     //'media_model' => Spatie\MediaLibrary\Media::class,
+
+	// Override package eloquent model with domain entity
 	'media_model' => \App\Domain\Media\Entities\Media::class,
 
     /*

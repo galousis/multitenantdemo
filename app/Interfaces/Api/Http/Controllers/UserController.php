@@ -14,7 +14,6 @@ use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
 use Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Domain\Tour\Contracts\TourRepositoryContract;
 
 /**
  * Class UserController
@@ -46,9 +45,6 @@ class UserController extends ApiController
 
 	/** @var GetUserByService  */
 	public $getUserBy;
-
-	/** @var  TourRepositoryContract */
-	public $tourRepo;
 	#endregion
 
 	#region Constructor
@@ -67,11 +63,9 @@ class UserController extends ApiController
 		LoginUserRequest $loginUserRequest, SignUpUserRequest $signUpUserRequest,
 		LogInUserService $logInUserService, LogOutUserService $logOutUserService,
 		SignUpUserService $signUpUserService, CreateUserService $createUserService,
-		GetUserByService $getUserBy, TourRepositoryContract $tourRepo
+		GetUserByService $getUserBy
 	)
 	{
-		$this->tourRepo = $tourRepo;
-
 		$this->loginUserRequest 	= $loginUserRequest;
 		$this->signUpUserRequest 	= $signUpUserRequest;
 		$this->logInUserService 	= $logInUserService;
@@ -89,15 +83,6 @@ class UserController extends ApiController
 	 */
 	public function login(Request $request)
 	{
-
-
-		$allTours = $this->tourRepo->findAll();
-
-
-
-
-
-
 		$data = $request->only(['email','password']);
 
 		$this->loginUserRequest->setEmail($data['email']);

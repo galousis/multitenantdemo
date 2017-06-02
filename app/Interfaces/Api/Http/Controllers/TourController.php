@@ -1,12 +1,12 @@
 <?php
 namespace App\Interfaces\Api\Http\Controllers;
 
-use App\Interfaces\Api\Http\Response\JsonResponseDefault;
+use App\Application\Services\Tour\Access\GetToursService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-//use App\Application\Services\Tour\Access\;
-use Config;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Domain\Tour\Entities\Tour;
+use Illuminate\Support\Collection;
+
 
 /**
  * Class TourController
@@ -18,17 +18,18 @@ class TourController extends ApiController
 {
 
 	#region Properties
-	//TODO
+	/** @var GetToursService  */
+	public $getToursService;
 	#endregion
 
 	#region Constructor
 	/**
-	 * DestinationController constructor.
-	 *
+	 * TourController constructor.
+	 * @param GetToursService $getToursService
 	 */
-	public function __construct()
+	public function __construct(GetToursService $getToursService)
 	{
-		//TODO
+		$this->getToursService = $getToursService;
 	}
 	#endregion
 
@@ -72,24 +73,47 @@ class TourController extends ApiController
 	 */
 	public function index(Request $request)
 	{
-		$data = array(
-			array('id'=>1, 'name'=>'Tour1'),
-			array('id'=>2, 'name'=>'Tour2'),
-			array('id'=>3, 'name'=>'Tour3'),
-			array('id'=>4, 'name'=>'Tour4'),
-			array('id'=>5, 'name'=>'Tour5'),
-			array('id'=>6, 'name'=>'Tour6'),
-			array('id'=>7, 'name'=>'Tour7'),
-			array('id'=>8, 'name'=>'Tour8'),
-			array('id'=>9, 'name'=>'Tour9'),
-			array('id'=>10, 'name'=>'Tour10'),
-			array('id'=>11, 'name'=>'Tour11'),
-			array('id'=>12, 'name'=>'Tour12')
-		);
+		#Eager load all tours with their destinations
+		/** @var LengthAwarePaginator $allTours */
+		$allTours = $this->getToursService->execute($request);
+
+
+		$allTours = $allTours->toArray();
+
+		$data = $allTours['data'];
+
+
+		$result = new Collection();
+
+		foreach ($data as $value)
+		{
+			/** @var Tour $tour */
+			$tour = $value;
+
+			$result->push(array('id'=>$tour->getId(), 'name'=>$tour->getTourCode()));
+
+
+		}
+		$result = $result->all();
+
+//		$result = array(
+//			array('id'=>1, 'name'=>'Tour1'),
+//			array('id'=>2, 'name'=>'Tour2'),
+//			array('id'=>3, 'name'=>'Tour3'),
+//			array('id'=>4, 'name'=>'Tour4'),
+//			array('id'=>5, 'name'=>'Tour5'),
+//			array('id'=>6, 'name'=>'Tour6'),
+//			array('id'=>7, 'name'=>'Tour7'),
+//			array('id'=>8, 'name'=>'Tour8'),
+//			array('id'=>9, 'name'=>'Tour9'),
+//			array('id'=>10, 'name'=>'Tour10'),
+//			array('id'=>11, 'name'=>'Tour11'),
+//			array('id'=>12, 'name'=>'Tour12')
+//		);
 
 //		return JsonResponseDefault::create(true, $data, 'tours retrieved successfully', 200);
 
-		return $data;
+		return $result;
 
 		//return $this->getTourBy->execute($request);
 	}
