@@ -60,7 +60,7 @@ class Destination implements HasMedia
 	private $updatedAt = 'CURRENT_TIMESTAMP';
 
 	/** @var  ArrayCollection */
-	protected $tours;
+	private $tours;
 	#endregion
 
 	#region constructor

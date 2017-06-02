@@ -22,7 +22,7 @@ class Tour
 	/**
 	 * @var string
 	 */
-	private $tourcode;
+	private $tourCode;
 
 	/**
 	 * @var string
@@ -55,7 +55,7 @@ class Tour
 	private $updatedAt = 'CURRENT_TIMESTAMP';
 
 	/** @var  ArrayCollection */
-	protected $destinations;
+	private $destinations;
 	#endregion
 
 	#region constructor
@@ -95,7 +95,7 @@ class Tour
 	 */
 	public function setTourCode($tourcode)
 	{
-		$this->tourcode = $tourcode;
+		$this->tourCode = $tourcode;
 	}
 
 	/**
@@ -132,6 +132,14 @@ class Tour
 	#endregion
 
 	#region Getters
+	/**
+	 * @return string
+	 */
+	public function getTourCode()
+	{
+		return $this->tourCode;
+	}
+
 	/**
 	 * @return string
 	 */

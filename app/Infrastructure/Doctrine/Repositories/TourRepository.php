@@ -97,7 +97,10 @@ class TourRepository implements TourRepositoryContract
 	 */
 	public function findAll()
 	{
-		$tasks = $this->em->getRepository($this->class)->findAll();
+
+
+		$tasksBuilder = $this->em->getRepository($this->class);
+		$tasks = $tasksBuilder->findAll();
 		return $tasks;
 	}
 
