@@ -53,7 +53,7 @@ class SignUpUserService implements ApplicationService
 	 *
 	 * @throws UserAlreadyExistsException
 	 */
-	public function execute($request = null)
+	public function execute(Request $request)
 	{
 
 		try {

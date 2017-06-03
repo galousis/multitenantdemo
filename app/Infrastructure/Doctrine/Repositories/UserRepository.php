@@ -2,6 +2,7 @@
 namespace App\Infrastructure\Doctrine\Repositories;
 
 use App\Domain\User\Entities\User;
+use App\Domain\User\ValueObjects\UserId;
 use App\Domain\User\Exceptions\UserDoesNotExistException;
 use Doctrine\ORM\EntityManager;
 use App\Domain\User\Contracts\UserRepositoryContract;
@@ -79,13 +80,13 @@ class UserRepository implements UserRepositoryContract
 	}
 
 	/**
-	 * @param $id
+	 * @param UserId $id
 	 * @return null|object
 	 */
-	public function findById($id)
+	public function findById(UserId $id)
 	{
 		return $this->em->getRepository($this->class)->findOneBy([
-			'id' => $id
+			'id' => $id->id()
 		]);
 	}
 

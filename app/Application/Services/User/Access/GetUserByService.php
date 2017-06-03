@@ -5,7 +5,7 @@ use App\Application\Services\ApplicationService;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Contracts\UserRepositoryContract;
 use App\Application\Services\DataTransformer\User\UserDataTransformer;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Application\Exceptions\GetUserByServiceException;
 use Exception;
@@ -38,11 +38,11 @@ class GetUserByService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param null $request
+	 * @param Request $request
 	 * @return mixed
 	 * @throws GetUserByServiceException
 	 */
-	public function execute($request = null)
+	public function execute(Request $request)
 	{
 
 		try{

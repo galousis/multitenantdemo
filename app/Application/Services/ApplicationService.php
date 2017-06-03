@@ -1,6 +1,8 @@
 <?php
 namespace App\Application\Services;
 
+use Illuminate\Http\Request;
+
 /**
  * Interface ApplicationService
  *
@@ -10,8 +12,8 @@ namespace App\Application\Services;
 interface ApplicationService
 {
 	/**
-	 * @param $request
+	 * @param Request $request
 	 * @return mixed
 	 */
-	public function execute($request = null);
+	public function execute(Request $request);
 }

@@ -33,11 +33,11 @@ class LogInUserService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param $request
+	 * @param Request $request
 	 * @return mixed
 	 * @throws LoginUserServiceException
 	 */
-	public function execute($request = null)
+	public function execute(Request $request = null)
 	{
 			$response = $this->authenticationService->authenticate($request);
 			return $response;

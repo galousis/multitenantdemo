@@ -8,6 +8,7 @@ use App\Domain\User\Contracts\UserRepositoryContract;
 use App\Domain\User\Exceptions\UserAlreadyExistsException;
 use App\Interfaces\Api\Http\Controllers\ApiController;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
+use Illuminate\Http\Request;
 use Config;
 
 /**
@@ -43,11 +44,11 @@ class CreateUserService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param $request
+	 * @param Request $request
 	 * @return User
 	 * @throws UserAlreadyExistsException
 	 */
-	public function execute($request = null)
+	public function execute(Request $request)
 	{
 
 		try {

@@ -39,20 +39,22 @@ class Authentifier
 	#region Methods
 
 	/**
-	 * @param LoginUserRequest $request
+	 * @param Request $request
 	 * @return \Illuminate\Http\JsonResponse
 	 */
-	public function authenticate($request)
+	public function authenticate(Request $request)
 	{
 
 		try {
+
+			$requestData = $request->only(['email','password']);
 
 			$data =[];
 			$data['name'] 	= null;
 			$data['jwt'] 	= null;
 
 			/** @var User $user */
-			$user = $this->repository->findByEmail($request->email());
+			$user = $this->repository->findByEmail($requestData['email']);
 
 			if (!$user)
 			{
@@ -61,7 +63,7 @@ class Authentifier
 
 			$encrypted = $user->getPassword();
 
-			if (!Hash::check($request->password(), $encrypted)) {
+			if (!Hash::check($requestData['password'], $encrypted)) {
 				throw new JWTException('Wrong password', 500);
 			}
 

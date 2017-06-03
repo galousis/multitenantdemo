@@ -5,7 +5,6 @@ namespace App\Interfaces\Api\Http\Controllers;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Application\Services\User\Access\LoginUserRequest;
 use App\Application\Services\User\Access\LogInUserService;
 use App\Application\Services\User\Access\LogOutUserService;
 use App\Application\Services\User\Access\SignUpUserRequest;
@@ -25,9 +24,6 @@ class UserController extends ApiController
 {
 
 	#region Properties
-	/** @var LoginUserRequest */
-	public $loginUserRequest;
-
 	/** @var SignUpUserRequest */
 	public $signUpUserRequest;
 
@@ -51,7 +47,6 @@ class UserController extends ApiController
 	/**
 	 * UserController constructor.
 	 *
-	 * @param LoginUserRequest $loginUserRequest
 	 * @param SignUpUserRequest $signUpUserRequest
 	 * @param LogInUserService $logInUserService
 	 * @param LogOutUserService $logOutUserService
@@ -60,13 +55,12 @@ class UserController extends ApiController
 	 * @param GetUserByService $getUserBy
 	 */
 	public function __construct(
-		LoginUserRequest $loginUserRequest, SignUpUserRequest $signUpUserRequest,
+		SignUpUserRequest $signUpUserRequest,
 		LogInUserService $logInUserService, LogOutUserService $logOutUserService,
 		SignUpUserService $signUpUserService, CreateUserService $createUserService,
 		GetUserByService $getUserBy
 	)
 	{
-		$this->loginUserRequest 	= $loginUserRequest;
 		$this->signUpUserRequest 	= $signUpUserRequest;
 		$this->logInUserService 	= $logInUserService;
 		$this->logOutUserService	= $logOutUserService;
@@ -83,12 +77,7 @@ class UserController extends ApiController
 	 */
 	public function login(Request $request)
 	{
-		$data = $request->only(['email','password']);
-
-		$this->loginUserRequest->setEmail($data['email']);
-		$this->loginUserRequest->setPassword($data['password']);
-
-		return $this->logInUserService->execute($this->loginUserRequest);
+		return $this->logInUserService->execute($request);
 	}
 
 	/**

@@ -2,6 +2,7 @@
 namespace App\Domain\User\Contracts;
 
 use App\Domain\User\Entities\User;
+use App\Domain\User\ValueObjects\UserId;
 
 /**
  * Interface UserRepositoryContract
@@ -36,9 +37,10 @@ interface UserRepositoryContract{
 	public function load($data);
 
 	/**
+	 * @param UserId $id
 	 * @return mixed
 	 */
-	public function findById($id);
+	public function findById(UserId $id);
 
 	/**
 	 * @return mixed

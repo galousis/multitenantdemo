@@ -4,7 +4,7 @@ namespace App\Application\Services\Tour\Access;
 use App\Application\Services\ApplicationService;
 use App\Domain\Tour\Entities\Tour;
 use App\Domain\Tour\Contracts\TourRepositoryContract;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Application\Exceptions\GetToursServiceException;
 use Exception;
@@ -40,11 +40,11 @@ class GetToursService implements ApplicationService
 
 	#region Methods
 	/**
-	 * @param null $request
+	 * @param Request $request
 	 * @return mixed
 	 * @throws GetToursServiceException
 	 */
-	public function execute($request = null)
+	public function execute(Request $request)
 	{
 
 		try{

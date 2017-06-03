@@ -3,6 +3,7 @@ namespace App\Domain\User\Entities;
 
 use Carbon\Carbon;
 use App\Domain\User\ValueObjects\UserId;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class User
@@ -15,6 +16,9 @@ class User
 	#region properties
 	/** @var UserId */
 	public $id;
+
+	/** @var ArrayCollection  */
+	private $tours;
 
 	/**
 	 * @var string
@@ -54,13 +58,18 @@ class User
 	 */
 	public function __construct($data)
 	{
-		$this->id = isset($data['id']) ? $data['id'] : null;
-		$this->setEmail($data['email']);
-		$this->setName($data['name']);
-		$this->setPassword($data['password']);
-		$this->setRememberToken();
-		$this->setCreatedAt();
-		$this->setUpdatedAt();
+		if (count($data)>0)
+		{
+			$this->id = isset($data['id']) ? $data['id'] : null;
+			$this->tours = new ArrayCollection();
+			$this->setEmail($data['email']);
+			$this->setName($data['name']);
+			$this->setPassword($data['password']);
+			$this->setRememberToken();
+			$this->setCreatedAt();
+			$this->setUpdatedAt();
+		}
+
 	}
 	#endregion
 
@@ -91,6 +100,15 @@ class User
 	#endregion
 
 	#region Getters
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTours()
+	{
+		return $this->tours;
+	}
+
+
 	/**
 	 * @return string
 	 */
