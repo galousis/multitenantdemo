@@ -42,7 +42,7 @@ class GetToursService implements ApplicationService
 
 		try{
 
-			$page = 1;
+			//TODO this dynamic later on via UI
 			$perPage = 5;
 
 			$allTours = $this->tourRepository->paginateAll($perPage);

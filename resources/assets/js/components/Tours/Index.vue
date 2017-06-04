@@ -122,7 +122,7 @@
                 paginationT: {}
             }
         },
-        mounted: function () {
+        created: function () {
             this.fetchTours()
         },
         methods: {
