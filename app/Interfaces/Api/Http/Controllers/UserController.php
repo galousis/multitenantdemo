@@ -11,8 +11,10 @@ use App\Application\Services\User\Access\SignUpUserRequest;
 use App\Application\Services\User\Access\SignUpUserService;
 use App\Application\Services\User\Create\CreateUserService;
 use App\Application\Services\User\Access\GetUserByService;
-use Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domain\User\Entities\User;
+use Config;
 
 /**
  * Class UserController
@@ -139,9 +141,27 @@ class UserController extends ApiController
 	 */
 	public function index(Request $request)
 	{
-		$r = $this->getUserBy->execute($request);
 
-		return $r;
+		/** @var LengthAwarePaginator $allUsers */
+		$allUsers = $this->getUserBy->execute($request);
+
+
+		$allUsers = $allUsers->toArray();
+
+		$data = $allUsers['data'];
+
+		foreach ($allUsers['data'] as $key => $value)
+		{
+			/** @var User $user */
+			$user = $value;
+			$allUsers['data'][$key] = array('id'=>$user->getId(), 'name'=>$user->getName(), 'email'=>$user->getEmail());
+		}
+
+		return $allUsers;
+
+//		$r = $this->getUserBy->execute($request);
+//
+//		return $r;
 	}
 
 	/**

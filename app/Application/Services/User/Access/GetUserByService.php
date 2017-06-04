@@ -8,6 +8,7 @@ use App\Application\Services\DataTransformer\User\UserDataTransformer;
 use Illuminate\Http\Request;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Application\Exceptions\GetUserByServiceException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 
 /**
@@ -56,9 +57,15 @@ class GetUserByService implements ApplicationService
 			}
 			else
 			{
-				$sql 		= "SELECT u FROM App\Domain\User\Entities\User u ";
-				$pagination = $this->userRepository->paginate($sql, $request->input('page'), $request->input('limit'));
-				return JsonResponseDefault::create(true, $pagination, 'users retrieved successfully', 200);
+//				$sql 		= "SELECT u FROM App\Domain\User\Entities\User u ";
+//				$pagination = $this->userRepository->paginate($sql, $request->input('page'), $request->input('limit'));
+//				return JsonResponseDefault::create(true, $pagination, 'users retrieved successfully', 200);
+
+				//TODO this dynamic later on via UI
+				$perPage = 5;
+				/** @var LengthAwarePaginator $allUsers */
+				$allUsers = $this->userRepository->paginateAll($perPage);
+				return $allUsers;
 			}
 
 

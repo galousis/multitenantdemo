@@ -63,13 +63,4 @@ interface UserRepositoryContract{
 	 * @return mixed
 	 */
 	public function findByEmail($email);
-
-
-	/**
-	 * @param $dql
-	 * @param $page
-	 * @param $limit
-	 * @return mixed
-	 */
-	public function paginate($dql, $page=1, $limit=10);
 }

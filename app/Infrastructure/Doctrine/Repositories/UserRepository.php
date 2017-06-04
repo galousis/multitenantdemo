@@ -11,6 +11,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use App\Interfaces\Api\Http\Controllers\ApiController;
+use LaravelDoctrine\ORM\Pagination\PaginatesFromRequest;
 
 /**
  * Class UserRepository
@@ -20,6 +21,8 @@ use App\Interfaces\Api\Http\Controllers\ApiController;
  */
 class UserRepository implements UserRepositoryContract
 {
+	use PaginatesFromRequest;
+
 	/**
 	 * @var string
 	 */
@@ -28,7 +31,7 @@ class UserRepository implements UserRepositoryContract
 	/**
 	 * @var EntityManager
 	 */
-	private $em;
+	private $_em;
 
 	/**
 	 * UserRepository constructor.
@@ -36,38 +39,41 @@ class UserRepository implements UserRepositoryContract
 	 */
 	public function __construct(EntityManager $em)
 	{
-		$this->em = $em;
+		$this->_em = $em;
 	}
 
 	/**
 	 * @param User $user
+	 * @return void
 	 */
 	public function create(User $user)
 	{
-		$this->em->persist($user);
-		$this->em->flush();
+		$this->_em->persist($user);
+		$this->_em->flush();
 	}
 
 	/**
 	 * @param User $user
 	 * @param $data
+	 * @return void
 	 */
 	public function update(User $user, $data)
 	{
 		$user->setName($data['name']);
 		$user->setEmail($data['email']);
 		$user->setPassword($data['password']);
-		$this->em->persist($user);
-		$this->em->flush();
+		$this->_em->persist($user);
+		$this->_em->flush();
 	}
 
 	/**
 	 * @param User $user
+	 * @return void
 	 */
 	public function delete(User $user)
 	{
-		$this->em->remove($user);
-		$this->em->flush();
+		$this->_em->remove($user);
+		$this->_em->flush();
 	}
 
 	/**
@@ -85,7 +91,7 @@ class UserRepository implements UserRepositoryContract
 	 */
 	public function findById(UserId $id)
 	{
-		return $this->em->getRepository($this->class)->findOneBy([
+		return $this->_em->getRepository($this->class)->findOneBy([
 			'id' => $id->id()
 		]);
 	}
@@ -96,7 +102,7 @@ class UserRepository implements UserRepositoryContract
 	 */
 	public function findByEmail($email)
 	{
-		$result = $this->em->getRepository($this->class)->findOneBy([
+		$result = $this->_em->getRepository($this->class)->findOneBy([
 				'email'=>$email
 		]);
 
@@ -108,7 +114,7 @@ class UserRepository implements UserRepositoryContract
 	 */
 	public function findAll()
 	{
-		$tasks = $this->em->getRepository($this->class)->findAll();
+		$tasks = $this->_em->getRepository($this->class)->findAll();
 		return $tasks;
 	}
 
@@ -126,46 +132,13 @@ class UserRepository implements UserRepositoryContract
 	}
 
 	/**
-	 * @param $dql
-	 * @param int $page
-	 * @param int $limit
-	 * @return Paginator
-	 */
-	public function paginate($dql, $page = 1, $limit = 20)
-	{
-		$query = $this->em->createQuery($dql)
-			->setFirstResult($limit * ($page - 1))
-			->setMaxResults($limit);
-
-		$paginator = new Paginator($query, $fetchJoinCollection = true);
-
-		return $this->paginatorToArray($paginator);
-	}
-
-	/**
-	 * @param Paginator $paginator
-	 * @return array
-	 */
-	public function paginatorToArray(Paginator $paginator)
-	{
-		$arrayResponse = [];
-
-		foreach($paginator as $manager){
-			$arrayResponse[] = $this->toArray($manager);
-		}
-
-		return $arrayResponse;
-	}
-
-
-	/**
 	 * @param array $filter
 	 * @return array
 	 */
 	public function findByCriteria(array $filter)
 	{
 		$criteria = $this->addCriteria($filter);
-		$result = $this->em->getRepository($this->class)->matching($criteria)->toArray();
+		$result = $this->_em->getRepository($this->class)->matching($criteria)->toArray();
 
 		$arrayResponse = [];
 
@@ -214,6 +187,21 @@ class UserRepository implements UserRepositoryContract
 		}
 
 		return $criteria;
+	}
+
+	/**
+	 * Creates a new QueryBuilder instance that is prepopulated for this entity name.
+	 *
+	 * @param string $alias
+	 * @param string $indexBy The index for the from.
+	 *
+	 * @return QueryBuilder
+	 */
+	public function createQueryBuilder($alias, $indexBy = null)
+	{
+		return $this->_em->createQueryBuilder()
+			->select($alias)
+			->from(User::class, $alias, $indexBy);
 	}
 
 }
