@@ -54,7 +54,16 @@
                 </el-table-column>
             </el-table>
 
-            <Paginate></Paginate>
+                <div class="block">
+                    <div class="pagination">
+                        <button class="btn btn-default" @click="fetchTours(paginationT.prev_page_url)" :disabled="!paginationT.prev_page_url">
+                            Previous
+                        </button>
+                        <span>Page {{paginationT.current_page}} of {{paginationT.last_page}}</span>
+                        <button class="btn btn-default" @click="fetchTours(paginationT.next_page_url)" :disabled="!paginationT.next_page_url">Next
+                        </button>
+                    </div>
+                </div>
 
             <!--<el-table-->
                     <!--:data="tableData"-->
@@ -105,12 +114,16 @@
 </template>
 
 <script>
-    import Paginate from "../../components/Paginate.vue";
+    //import Paginate from "../../components/Paginate.vue";
     export default {
         data() {
             return {
-                tableData: []
+                tableData: [],
+                paginationT: {}
             }
+        },
+        mounted: function () {
+            this.fetchTours()
         },
         methods: {
             handleEdit(index, row) {
@@ -118,20 +131,41 @@
             },
             handleDelete(index, row) {
                 console.log(index, row);
+            },
+            handleSizeChange(val) {
+                console.log(`${val} items per page`);
+            },
+            handleCurrentChange(val) {
+                console.log(`current page: ${val}`);
+            },
+            fetchTours: function (page_url) {
+                let vm = this;
+
+                page_url = page_url || '/api/v1/tours';
+
+                return this.$http.get(page_url).then((response) => {
+
+                    vm.tableData = response.data.data;
+                    vm.paginationT = vm.makePagination(response.data);
+
+                    console.log(response.data);
+                });
+            },
+            makePagination: function (data){
+                //here we use response.data
+                var pagination = {
+                    current_page: data.current_page,
+                    last_page: data.last_page,
+                    next_page_url: data.next_page_url,
+                    prev_page_url: data.prev_page_url
+                }
+                return pagination;
+
             }
-        },
-        created() {
-            let vm = this;
-
-            return this.$http.get('/api/v1/tours').then((response) => {
-
-                vm.tableData = response.data;
-                console.log(response.data);
-            });
-        },
-        components: {
-            Paginate
         }
+//        components: {
+//            Paginate
+//        }
     }
 </script>
 

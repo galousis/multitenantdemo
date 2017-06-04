@@ -73,7 +73,6 @@ class TourController extends ApiController
 	 */
 	public function index(Request $request)
 	{
-		#Eager load all tours with their destinations
 		/** @var LengthAwarePaginator $allTours */
 		$allTours = $this->getToursService->execute($request);
 
@@ -82,40 +81,14 @@ class TourController extends ApiController
 
 		$data = $allTours['data'];
 
-
-		$result = new Collection();
-
-		foreach ($data as $value)
+		foreach ($allTours['data'] as $key => $value)
 		{
 			/** @var Tour $tour */
 			$tour = $value;
-
-			$result->push(array('id'=>$tour->getId(), 'name'=>$tour->getTourCode()));
-
-
+			$allTours['data'][$key] = array('id'=>$tour->getId(), 'name'=>$tour->getTourCode());
 		}
-		$result = $result->all();
 
-//		$result = array(
-//			array('id'=>1, 'name'=>'Tour1'),
-//			array('id'=>2, 'name'=>'Tour2'),
-//			array('id'=>3, 'name'=>'Tour3'),
-//			array('id'=>4, 'name'=>'Tour4'),
-//			array('id'=>5, 'name'=>'Tour5'),
-//			array('id'=>6, 'name'=>'Tour6'),
-//			array('id'=>7, 'name'=>'Tour7'),
-//			array('id'=>8, 'name'=>'Tour8'),
-//			array('id'=>9, 'name'=>'Tour9'),
-//			array('id'=>10, 'name'=>'Tour10'),
-//			array('id'=>11, 'name'=>'Tour11'),
-//			array('id'=>12, 'name'=>'Tour12')
-//		);
-
-//		return JsonResponseDefault::create(true, $data, 'tours retrieved successfully', 200);
-
-		return $result;
-
-		//return $this->getTourBy->execute($request);
+		return $allTours;
 	}
 
 	/**

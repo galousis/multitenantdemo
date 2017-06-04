@@ -50,17 +50,17 @@ interface TourRepositoryContract{
 	 */
 	public function findAll();
 
-	/**
-	 * @param Tour $tour
-	 * @return mixed
-	 */
-	public function toArray(Tour $tour);
-
-	/**
-	 * @param $dql
-	 * @param $page
-	 * @param $limit
-	 * @return mixed
-	 */
-	public function paginate($dql, $page=1, $limit=10);
+//	/**
+//	 * @param Tour $tour
+//	 * @return mixed
+//	 */
+//	public function toArray(Tour $tour);
+//
+//	/**
+//	 * @param $dql
+//	 * @param $page
+//	 * @param $limit
+//	 * @return mixed
+//	 */
+//	public function paginate($dql, $page=1, $limit=10);
 }

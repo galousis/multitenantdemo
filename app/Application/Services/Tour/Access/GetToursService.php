@@ -8,10 +8,6 @@ use Illuminate\Http\Request;
 use App\Interfaces\Api\Http\Response\JsonResponseDefault;
 use App\Application\Exceptions\GetToursServiceException;
 use Exception;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-//use Illuminate\Contracts\Pagination\LengthAwarePaginator as ILengthAwarePaginator;
-use Illuminate\Pagination\LengthAwarePaginator;
-use LaravelDoctrine\ORM\Pagination\PaginatorAdapter;
 
 
 /**
@@ -26,15 +22,12 @@ class GetToursService implements ApplicationService
 	#region properties
 	/** @var TourRepositoryContract  */
 	private $tourRepository;
-//	/** @var ILengthAwarePaginator  */
-//	private $pagin;
 	#endregion
 
 	#region Constructor
 	public function __construct(TourRepositoryContract $tourRepository)
 	{
 		$this->tourRepository = $tourRepository;
-//		$this->pagin = $pagin;
 	}
 	#endregion
 
@@ -49,25 +42,13 @@ class GetToursService implements ApplicationService
 
 		try{
 
-			$allTours = $this->tourRepository->findAll();
-
 			$page = 1;
 			$perPage = 5;
 
-//			$path        = Paginator::resolveCurrentPath();
+			$allTours = $this->tourRepository->paginateAll($perPage);
 
-			$r = new LengthAwarePaginator(
-				$allTours,
-				count($allTours),
-				$perPage,
-				$page
-			);
+			return $allTours;
 
-			return $r;
-
-//			$sql 		= "SELECT u FROM App\Domain\User\Entities\User u ";
-//			$pagination = $this->userRepository->paginate($sql, $request->input('page'), $request->input('limit'));
-//			return JsonResponseDefault::create(true, $pagination, 'users retrieved successfully', 200);
 
 		}catch (Exception $e){
 			throw new GetToursServiceException($e->getMessage());

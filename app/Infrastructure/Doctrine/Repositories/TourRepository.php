@@ -10,6 +10,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use App\Interfaces\Api\Http\Controllers\ApiController;
+use LaravelDoctrine\ORM\Pagination\PaginatesFromRequest;
 
 
 /**
@@ -21,6 +22,8 @@ use App\Interfaces\Api\Http\Controllers\ApiController;
 class TourRepository implements TourRepositoryContract
 {
 
+	use PaginatesFromRequest;
+
 	/**
 	 * @var string
 	 */
@@ -29,15 +32,15 @@ class TourRepository implements TourRepositoryContract
 	/**
 	 * @var EntityManager
 	 */
-	private $em;
+	private $_em;
 
 	/**
 	 * UserRepository constructor.
-	 * @param EntityManager $em
+	 * @param EntityManager $_em
 	 */
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManager $_em)
 	{
-		$this->em = $em;
+		$this->_em = $_em;
 	}
 
 	/**
@@ -46,8 +49,8 @@ class TourRepository implements TourRepositoryContract
 	 */
 	public function create(Tour $tour)
 	{
-		$this->em->persist($tour);
-		$this->em->flush();
+		$this->_em->persist($tour);
+		$this->_em->flush();
 	}
 
 	/**
@@ -58,8 +61,8 @@ class TourRepository implements TourRepositoryContract
 	public function update(Tour $tour, $data)
 	{
 		$tour->setName($data['name']);
-		$this->em->persist($tour);
-		$this->em->flush();
+		$this->_em->persist($tour);
+		$this->_em->flush();
 	}
 
 	/**
@@ -68,8 +71,8 @@ class TourRepository implements TourRepositoryContract
 	 */
 	public function delete(Tour $tour)
 	{
-		$this->em->remove($tour);
-		$this->em->flush();
+		$this->_em->r_emove($tour);
+		$this->_em->flush();
 	}
 
 	/**
@@ -87,7 +90,7 @@ class TourRepository implements TourRepositoryContract
 	 */
 	public function findById($id)
 	{
-		return $this->em->getRepository($this->class)->findOneBy([
+		return $this->_em->getRepository($this->class)->findOneBy([
 			'id' => $id
 		]);
 	}
@@ -99,9 +102,24 @@ class TourRepository implements TourRepositoryContract
 	{
 
 
-		$tasksBuilder = $this->em->getRepository($this->class);
+		$tasksBuilder = $this->_em->getRepository($this->class);
 		$tasks = $tasksBuilder->findAll();
 		return $tasks;
+	}
+
+	/**
+	 * Creates a new QueryBuilder instance that is prepopulated for this entity name.
+	 *
+	 * @param string $alias
+	 * @param string $indexBy The index for the from.
+	 *
+	 * @return QueryBuilder
+	 */
+	public function createQueryBuilder($alias, $indexBy = null)
+	{
+		return $this->_em->createQueryBuilder()
+			->select($alias)
+			->from(Tour::class, $alias, $indexBy);
 	}
 
 	/**
@@ -117,46 +135,13 @@ class TourRepository implements TourRepositoryContract
 	}
 
 	/**
-	 * @param $dql
-	 * @param int $page
-	 * @param int $limit
-	 * @return Paginator
-	 */
-	public function paginate($dql, $page = 1, $limit = 20)
-	{
-		$query = $this->em->createQuery($dql)
-			->setFirstResult($limit * ($page - 1))
-			->setMaxResults($limit);
-
-		$paginator = new Paginator($query, $fetchJoinCollection = true);
-
-		return $this->paginatorToArray($paginator);
-	}
-
-	/**
-	 * @param Paginator $paginator
-	 * @return array
-	 */
-	public function paginatorToArray(Paginator $paginator)
-	{
-		$arrayResponse = [];
-
-		foreach($paginator as $manager){
-			$arrayResponse[] = $this->toArray($manager);
-		}
-
-		return $arrayResponse;
-	}
-
-
-	/**
 	 * @param array $filter
 	 * @return array
 	 */
 	public function findByCriteria(array $filter)
 	{
 		$criteria = $this->addCriteria($filter);
-		$result = $this->em->getRepository($this->class)->matching($criteria)->toArray();
+		$result = $this->_em->getRepository($this->class)->matching($criteria)->toArray();
 
 		$arrayResponse = [];
 
