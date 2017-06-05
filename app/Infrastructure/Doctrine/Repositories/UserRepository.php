@@ -5,6 +5,7 @@ use App\Domain\User\Entities\User;
 use App\Domain\User\ValueObjects\UserId;
 use App\Domain\User\Exceptions\UserDoesNotExistException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\User\Contracts\UserRepositoryContract;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -29,15 +30,15 @@ class UserRepository implements UserRepositoryContract
 	private $class = User::class;
 
 	/**
-	 * @var EntityManager
+	 * @var EntityManagerInterface
 	 */
 	private $_em;
 
 	/**
 	 * UserRepository constructor.
-	 * @param EntityManager $em
+	 * @param EntityManagerInterface $em
 	 */
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManagerInterface $em)
 	{
 		$this->_em = $em;
 	}

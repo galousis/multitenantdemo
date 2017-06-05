@@ -82,7 +82,193 @@ return [
             'mapping_types' => [
                 //'enum' => 'string'
             ]
-        ]
+        ],
+		'GR' => [
+			'dev'           => env('APP_DEBUG'),
+			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
+			'mappings' => [
+				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
+				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+			],
+			'connection'    => env('GR_DB_CONNECTION', 'mysql'),
+			'namespaces'    => [
+				'App'
+			],
+			'paths'         => [
+				base_path('app')
+			],
+			'repository'    => Doctrine\ORM\EntityRepository::class,
+			'proxies'       => [
+				'namespace'     => false,
+				'path'          => storage_path('proxies'),
+				'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', false)
+			],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine events
+			|--------------------------------------------------------------------------
+			|
+			| The listener array expects the key to be a Doctrine event
+			| e.g. Doctrine\ORM\Events::onFlush
+			|
+			*/
+			'events'        => [
+				'listeners'   => [],
+				'subscribers' => []
+			],
+			'filters'       => [],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine mapping types
+			|--------------------------------------------------------------------------
+			|
+			| Link a Database Type to a Local Doctrine Type
+			|
+			| Using 'enum' => 'string' is the same of:
+			| $doctrineManager->extendAll(function (\Doctrine\ORM\Configuration $configuration,
+			|         \Doctrine\DBAL\Connection $connection,
+			|         \Doctrine\Common\EventManager $eventManager) {
+			|     $connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+			| });
+			|
+			| References:
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/custom-mapping-types.html
+			| http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html#custom-mapping-types
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/advanced-field-value-conversion-using-custom-mapping-types.html
+			| http://doctrine-orm.readthedocs.org/en/latest/reference/basic-mapping.html#reference-mapping-types
+			| http://symfony.com/doc/current/cookbook/doctrine/dbal.html#registering-custom-mapping-types-in-the-schematool
+			|--------------------------------------------------------------------------
+			*/
+			'mapping_types' => [
+				//'enum' => 'string'
+			]
+		],
+		'UK' => [
+			'dev'           => env('APP_DEBUG'),
+			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
+			'mappings' => [
+				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
+				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+			],
+			'connection'    => env('UK_DB_CONNECTION', 'mysql'),
+			'namespaces'    => [
+				'App'
+			],
+			'paths'         => [
+				base_path('app')
+			],
+			'repository'    => Doctrine\ORM\EntityRepository::class,
+			'proxies'       => [
+				'namespace'     => false,
+				'path'          => storage_path('proxies'),
+				'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', false)
+			],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine events
+			|--------------------------------------------------------------------------
+			|
+			| The listener array expects the key to be a Doctrine event
+			| e.g. Doctrine\ORM\Events::onFlush
+			|
+			*/
+			'events'        => [
+				'listeners'   => [],
+				'subscribers' => []
+			],
+			'filters'       => [],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine mapping types
+			|--------------------------------------------------------------------------
+			|
+			| Link a Database Type to a Local Doctrine Type
+			|
+			| Using 'enum' => 'string' is the same of:
+			| $doctrineManager->extendAll(function (\Doctrine\ORM\Configuration $configuration,
+			|         \Doctrine\DBAL\Connection $connection,
+			|         \Doctrine\Common\EventManager $eventManager) {
+			|     $connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+			| });
+			|
+			| References:
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/custom-mapping-types.html
+			| http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html#custom-mapping-types
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/advanced-field-value-conversion-using-custom-mapping-types.html
+			| http://doctrine-orm.readthedocs.org/en/latest/reference/basic-mapping.html#reference-mapping-types
+			| http://symfony.com/doc/current/cookbook/doctrine/dbal.html#registering-custom-mapping-types-in-the-schematool
+			|--------------------------------------------------------------------------
+			*/
+			'mapping_types' => [
+				//'enum' => 'string'
+			]
+		],
+		'US' => [
+			'dev'           => env('APP_DEBUG'),
+			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
+			'mappings' => [
+				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
+				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+			],
+			'connection'    => env('US_DB_CONNECTION', 'mysql'),
+			'namespaces'    => [
+				'App'
+			],
+			'paths'         => [
+				base_path('app')
+			],
+			'repository'    => Doctrine\ORM\EntityRepository::class,
+			'proxies'       => [
+				'namespace'     => false,
+				'path'          => storage_path('proxies'),
+				'auto_generate' => env('DOCTRINE_PROXY_AUTOGENERATE', false)
+			],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine events
+			|--------------------------------------------------------------------------
+			|
+			| The listener array expects the key to be a Doctrine event
+			| e.g. Doctrine\ORM\Events::onFlush
+			|
+			*/
+			'events'        => [
+				'listeners'   => [],
+				'subscribers' => []
+			],
+			'filters'       => [],
+			/*
+			|--------------------------------------------------------------------------
+			| Doctrine mapping types
+			|--------------------------------------------------------------------------
+			|
+			| Link a Database Type to a Local Doctrine Type
+			|
+			| Using 'enum' => 'string' is the same of:
+			| $doctrineManager->extendAll(function (\Doctrine\ORM\Configuration $configuration,
+			|         \Doctrine\DBAL\Connection $connection,
+			|         \Doctrine\Common\EventManager $eventManager) {
+			|     $connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+			| });
+			|
+			| References:
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/custom-mapping-types.html
+			| http://doctrine-dbal.readthedocs.org/en/latest/reference/types.html#custom-mapping-types
+			| http://doctrine-orm.readthedocs.org/en/latest/cookbook/advanced-field-value-conversion-using-custom-mapping-types.html
+			| http://doctrine-orm.readthedocs.org/en/latest/reference/basic-mapping.html#reference-mapping-types
+			| http://symfony.com/doc/current/cookbook/doctrine/dbal.html#registering-custom-mapping-types-in-the-schematool
+			|--------------------------------------------------------------------------
+			*/
+			'mapping_types' => [
+				//'enum' => 'string'
+			]
+		]
     ],
     /*
     |--------------------------------------------------------------------------

@@ -53,11 +53,13 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-	'url' => env('GR_DOMAIN', 'http://localhost'),
+	'manual_tenants' => ['GR'=>'gr', 'UK'=>'uk', 'US'=>'us'],
 
-	'url' => env('UK_DOMAIN', 'http://localhost'),
-
-	'url' => env('US_DOMAIN', 'http://localhost'),
+//	'url' => env('GR_DOMAIN', 'http://localhost'),
+//
+//	'url' => env('UK_DOMAIN', 'http://localhost'),
+//
+//	'url' => env('US_DOMAIN', 'http://localhost'),
 
 
     /*
@@ -181,6 +183,7 @@ return [
         App\Application\Providers\AppServiceProvider::class,
         App\Application\Providers\AuthServiceProvider::class,
 		App\Interfaces\Web\Http\Providers\UserServiceProvider::class,
+		App\Interfaces\Web\Http\Providers\TenantServiceProvider::class,
 		App\Application\Providers\MediaServiceProvider::class,
         App\Application\Providers\BroadcastServiceProvider::class,
         App\Application\Providers\EventServiceProvider::class,

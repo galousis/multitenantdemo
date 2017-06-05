@@ -2,7 +2,7 @@
 namespace App\Infrastructure\Doctrine\Repositories;
 
 use App\Domain\Media\Entities\Media;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Media\Contracts\MediaRepositoryContract;
 
 /**
@@ -20,15 +20,15 @@ class MediaRepository implements MediaRepositoryContract
 	private $class = Media::class;
 
 	/**
-	 * @var EntityManager
+	 * @var EntityManagerInterface
 	 */
 	private $em;
 
 	/**
 	 * MediaRepository constructor.
-	 * @param EntityManager $em
+	 * @param EntityManagerInterface $em
 	 */
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManagerInterface $em)
 	{
 		$this->em = $em;
 	}

@@ -4,7 +4,7 @@ namespace App\Infrastructure\Doctrine\Repositories;
 use App\Domain\Tour\Entities\Tour;
 use App\Domain\Tour\Contracts\TourRepositoryContract;
 use App\Domain\Tour\Exceptions\TourDoesNotExistException;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
@@ -30,15 +30,15 @@ class TourRepository implements TourRepositoryContract
 	private $class = Tour::class;
 
 	/**
-	 * @var EntityManager
+	 * @var EntityManagerInterface
 	 */
 	private $_em;
 
 	/**
-	 * UserRepository constructor.
-	 * @param EntityManager $_em
+	 * TourRepository constructor.
+	 * @param EntityManagerInterface $_em
 	 */
-	public function __construct(EntityManager $_em)
+	public function __construct(EntityManagerInterface $_em)
 	{
 		$this->_em = $_em;
 	}
@@ -71,12 +71,12 @@ class TourRepository implements TourRepositoryContract
 	 */
 	public function delete(Tour $tour)
 	{
-		$this->_em->r_emove($tour);
+		$this->_em->remove($tour);
 		$this->_em->flush();
 	}
 
 	/**
-	 * create Tour
+	 * @param $data
 	 * @return Tour
 	 */
 	public function load($data)

@@ -4,7 +4,7 @@ namespace App\Infrastructure\Doctrine\Repositories;
 use App\Domain\Destination\Entities\Destination;
 use App\Domain\Destination\Contracts\DestinationRepositoryContract;
 use App\Domain\Destination\Exceptions\DestinationDoesNotExistException;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
@@ -27,15 +27,15 @@ class DestinationRepository implements DestinationRepositoryContract
 	private $class = Destination::class;
 
 	/**
-	 * @var EntityManager
+	 * @var EntityManagerInterface
 	 */
 	private $em;
 
 	/**
 	 * UserRepository constructor.
-	 * @param EntityManager $em
+	 * @param EntityManagerInterface $em
 	 */
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManagerInterface $em)
 	{
 		$this->em = $em;
 	}
