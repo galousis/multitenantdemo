@@ -9,7 +9,7 @@
                     <el-menu-item index="1" @click="openPage"><i class="el-icon-menu"></i>Dashboard</el-menu-item>
                     <el-menu-item index="2" @click="openPage"><i class="el-icon-menu"></i>Users</el-menu-item>
                     <el-menu-item index="3" @click="openPage"><i class="el-icon-menu"></i>Tours</el-menu-item>
-                    <el-menu-item index="4" @click="openPage"><i class="el-icon-setting"></i>Destinations</el-menu-item>
+                    <el-menu-item index="4" @click="openPage"><i class="el-icon-menu"></i>Destinations</el-menu-item>
                 </el-menu>
                 <!-- /.sidebar-menu -->
             </section>
