@@ -4,6 +4,9 @@ namespace App\Interfaces\Web\Http\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Domain\Tenant\Entities\Tenant;
+use App\Application\Services\Tenant\Access\TenantService;
+use Illuminate\Http\Request;
 
 /**
  * Class RouteServiceProvider
@@ -34,6 +37,32 @@ class RouteServiceProvider extends ServiceProvider
 	{
 		//
 		parent::boot();
+
+		#explicit bind to entity Tenant
+		Route::bind('domain', function ($value) {
+
+			if($value)
+			{
+				/** @var Tenant $domain */
+				$domain= TenantService::whereSubdomain($value)->first();
+				if ($domain) {
+					switch ($domain->getSubDomain()) {
+						case "gr":
+							return env('GR_DOMAIN');
+							break;
+						case "uk":
+							return env('UK_DOMAIN');
+							break;
+						case "us":
+							return env('US_DOMAIN');
+							break;
+					}
+				}
+			}
+			else{
+				return env('APP_DOMAIN');
+			}
+		});
 	}
 	/**
 	 * Define the routes for the application.

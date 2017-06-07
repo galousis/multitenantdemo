@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,30 +16,66 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
+/********** Sub domain **********/
+
 #auth
-Route::post('auth/login', ['uses' => 'UserController@login']);
-Route::post('auth/signup', ['uses' => 'UserController@signup']);
+Route::group(['domain' => '{subdomain}.'.env('APP_NAME').'.dev'], function() {
+	Route::post('auth/login', ['uses' => 'UserController@login']);
+	Route::post('auth/signup', ['uses' => 'UserController@signup']);
 
-#protected routes
-Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {
+	#protected routes
+	Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {
 
-	//users
-	Route::post('auth/me', ['as' => 'api.me.show', 'uses' => 'UserController@me']);
+			//users
+			Route::post('auth/me', ['as' => 'api.me.show', 'uses' => 'UserController@me']);
 //	Route::patch('auth/me', ['as' => 'api.me.update', 'uses' => 'UserController@update']);
 //	Route::put('auth/me', ['as' => 'api.me.update', 'uses' => 'UserController@update']);
-	Route::post('users', ['uses' => 'UserController@create', 'as' => 'api.create.user']);
-	Route::resource('users', 'UserController', array('only' => array('index')));
+			Route::post('users', ['uses' => 'UserController@create', 'as' => 'api.create.user']);
+			Route::resource('users', 'UserController', array('only' => array('index')));
 //	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
 
-	Route::group(['domain' => config('GR_DOMAIN')], function(){
+
+			//Destinations
+			Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@index']);
+			//	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
+			//	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
+
+			//Tours
+			Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@index']);
+			//	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
+			//	Route::resource('tours', 'TourController', array('only' => array('index')));
+
+			//tours destinations
+			//	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
+			//	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
+	});
+});
+
+/********** domain **********/
+
+Route::group(['domain' => env('APP_NAME').'.dev'], function() {
+	Route::post('auth/login', ['uses' => 'UserController@login']);
+	Route::post('auth/signup', ['uses' => 'UserController@signup']);
+
+	#protected routes
+	Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5','cors']], function () {
+
+		//users
+		Route::post('auth/me', ['as' => 'api.me.show', 'uses' => 'UserController@me']);
+//	Route::patch('auth/me', ['as' => 'api.me.update', 'uses' => 'UserController@update']);
+//	Route::put('auth/me', ['as' => 'api.me.update', 'uses' => 'UserController@update']);
+		Route::post('users', ['uses' => 'UserController@create', 'as' => 'api.create.user']);
+		Route::resource('users', 'UserController', array('only' => array('index')));
+//	Route::get('users/filter/', ['uses' => 'UserController@getByFilter', 'as' => 'filter.users']);
+
 
 		//Destinations
-			Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@index']);
+		Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@index']);
 		//	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
 		//	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
 
 		//Tours
-			Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@index']);
+		Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@index']);
 		//	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
 		//	Route::resource('tours', 'TourController', array('only' => array('index')));
 
@@ -48,40 +83,4 @@ Route::group(['middleware' => ['extendedjwt:admin,create-users','throttle:30:5',
 		//	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
 		//	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
 	});
-
-	Route::group(['domain' => 'UK_DOMAIN'], function(){
-
-		//Destinations
-			Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@index']);
-		//	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
-		//	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
-
-		//Tours
-			Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@index']);
-		//	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
-		//	Route::resource('tours', 'TourController', array('only' => array('index')));
-
-		//tours destinations
-		//	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
-		//	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
-	});
-
-
-	Route::group(['domain' => 'US_DOMAIN'], function(){
-
-		//Destinations
-			Route::get('destinations', ['as' => 'api.destinations.show', 'uses' => 'DestinationController@index']);
-		//	Route::post('destinations', ['as' => 'api.destinations.create', 'uses' => 'DestinationController@create']);
-		//	Route::resource('destinations', 'DestinationController', array('only' => array('index')));
-
-		//Tours
-			Route::get('tours', ['as' => 'api.tours.show', 'uses' => 'TourController@index']);
-		//	Route::post('tours', ['as' => 'api.tours.create', 'uses' => 'TourController@create']);
-		//	Route::resource('tours', 'TourController', array('only' => array('index')));
-
-		//tours destinations
-		//	Route::patch('tours/{tours}/destinations', ['as' => 'api.tours.destinations.sync', 'uses' => 'ToursDestinationsController@sync']);
-		//	Route::resource('tours.destinations', 'ToursDestinationsController', ['only' => ['index', 'store', 'destroy']]);
-	});
-
 });

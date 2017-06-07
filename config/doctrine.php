@@ -28,7 +28,8 @@ return [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
 				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
 				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
-				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TenantMapping::class
 			],
             'connection'    => env('DB_CONNECTION', 'mysql'),
             'namespaces'    => [
@@ -83,14 +84,15 @@ return [
                 //'enum' => 'string'
             ]
         ],
-		'GR' => [
+		'gr' => [
 			'dev'           => env('APP_DEBUG'),
 			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
 			'mappings' => [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
 				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
 				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
-				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TenantMapping::class
 			],
 			'connection'    => env('GR_DB_CONNECTION', 'mysql'),
 			'namespaces'    => [
@@ -145,14 +147,15 @@ return [
 				//'enum' => 'string'
 			]
 		],
-		'UK' => [
+		'uk' => [
 			'dev'           => env('APP_DEBUG'),
 			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
 			'mappings' => [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
 				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
 				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
-				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TenantMapping::class
 			],
 			'connection'    => env('UK_DB_CONNECTION', 'mysql'),
 			'namespaces'    => [
@@ -207,14 +210,15 @@ return [
 				//'enum' => 'string'
 			]
 		],
-		'US' => [
+		'us' => [
 			'dev'           => env('APP_DEBUG'),
 			'meta'          => env('DOCTRINE_METADATA', 'fluent'),
 			'mappings' => [
 				App\Infrastructure\Doctrine\Mappings\UserMapping::class,
 				App\Infrastructure\Doctrine\Mappings\DestinationMapping::class,
 				App\Infrastructure\Doctrine\Mappings\TourMapping::class,
-				App\Infrastructure\Doctrine\Mappings\MediaMapping::class
+				App\Infrastructure\Doctrine\Mappings\MediaMapping::class,
+				App\Infrastructure\Doctrine\Mappings\TenantMapping::class
 			],
 			'connection'    => env('US_DB_CONNECTION', 'mysql'),
 			'namespaces'    => [

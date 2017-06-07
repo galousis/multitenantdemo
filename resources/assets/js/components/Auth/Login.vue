@@ -15,7 +15,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="http://viventor.dev">
+                    <a class="navbar-brand" href="http://gr.backbone.dev">
                         My Application
                     </a>
                 </div>

@@ -39,6 +39,20 @@ return [
             'prefix' => '',
         ],
 
+		'tenant_db' => [
+			'driver' => 'mysql',
+			'host' => env('DB_HOST', '127.0.0.1'),
+			'port' => env('DB_PORT', '3306'),
+			'database' => '', // this will be filled in dynamically based on the tenant subdomain.
+			'username' => env('DB_USERNAME', 'forge'),
+			'password' => env('DB_PASSWORD', ''),
+			'charset' => 'utf8mb4',
+			'collation' => 'utf8mb4_unicode_ci',
+			'prefix' => '', // this can be changed and represents a database prefix e.g. 'business_acme'
+			'strict' => true,
+			'engine' => null,
+		],
+
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),

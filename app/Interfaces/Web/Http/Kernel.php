@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         //'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 		//'jwt' => \App\Interfaces\Api\Http\Middleware\JWTMiddleware::class,
 		'extendedjwt' => \App\Interfaces\Api\Http\Middleware\ExtendedJWT::class,
+//		'tenant' => \App\Interfaces\Api\Http\Middleware\TenantCheckInMiddleware::class,
 		'cors' => \App\Interfaces\Api\Http\Middleware\CORSMiddleware::class,
 		'throttle' =>  \GrahamCampbell\Throttle\Http\Middleware\ThrottleMiddleware::class,
     ];

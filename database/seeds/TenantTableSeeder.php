@@ -30,12 +30,30 @@ class TenantTableSeeder extends Seeder
 			{
 				foreach ($tenants as $key => $tenant) {
 
-					DB::table('tenants')->insert([
-						'sub_domain' => $tenants[$key],
-						'database' 	 => env('APP_NAME').'_'.$key,
-						'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-						'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-					]);
+					if ($key == env('DOMAIN_NAME'))
+					{
+						DB::table('tenants')->insert([
+							'sub_domain' => env('APP_NAME'),
+							'alias_domain' => env('APP_NAME'),
+							'connection' => 'mysql',
+							'meta' => '',
+							'database' 	 => env('APP_NAME'),
+							'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+							'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+						]);
+					}else
+					{
+						DB::table('tenants')->insert([
+							'sub_domain' => $tenants[$key],
+							'alias_domain' => $tenants[$key],
+							'connection' => 'tenant_db',
+							'meta' => '',
+							'database' 	 => env('APP_NAME').'_'.$key,
+							'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+							'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+						]);
+					}
+
 
 				}
 			}

@@ -17,18 +17,21 @@ use Exception;
  * @package App\Application\Services\Tenant\Access
  * @author thanos theodorakopoulos galousis@gmail.com
  */
-class TenantService
+class TenantService implements ApplicationService
 {
 
 	#region properties
 	/** @var TenantRepositoryContract  */
 	private $tenantRepository;
+	/** @var TenantRepositoryContract  */
+	private static $_tenantRepository;
 	#endregion
 
 	#region Constructor
 	public function __construct(TenantRepositoryContract $tenantRepository)
 	{
-		$this->tenantRepository = tenantRepository;
+		$this->tenantRepository = $tenantRepository;
+		self::$_tenantRepository= $tenantRepository;
 	}
 	#endregion
 
@@ -53,4 +56,24 @@ class TenantService
 		}
 	}
 
+	/**
+	 * @return TenantRepositoryContract
+	 */
+	public static function getTenantRepository()
+	{
+		return self::$_tenantRepository;
+	}
+
+	/**
+	 * @param $value
+	 * @return mixed
+	 */
+	public static function whereSubdomain($value)
+	{
+		try{
+			return self::getTenantRepository()->findBySubDomain($value);
+		}catch (Exception $e){
+			throw new TenantServiceException($e->getMessage());
+		}
+	}
 }

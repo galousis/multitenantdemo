@@ -18,7 +18,11 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
-    /**
+//	protected $subscribe = [
+//		'App\Domain\PersistDomainEventSubscriber',
+//	];
+
+	/**
      * Register any events for your application.
      *
      * @return void

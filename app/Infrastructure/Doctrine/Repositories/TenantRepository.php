@@ -95,8 +95,10 @@ class TenantRepository implements TenantRepositoryContract
 	 */
 	public function findBySubDomain($subDomain)
 	{
+		//TODO !attantion : we need to cache this particular query, since we load TenantResolveService from within service Tenant service provider and it executes in any request
+
 		return $this->_em->getRepository($this->class)->findOneBy([
-			'sub_domain' => $subDomain
+			'subDomain' => $subDomain
 		]);
 	}
 
@@ -105,8 +107,6 @@ class TenantRepository implements TenantRepositoryContract
 	 */
 	public function findAll()
 	{
-		$tasksBuilder = $this->_em->getRepository($this->class);
-		$tasks = $tasksBuilder->findAll();
-		return $tasks;
+		return $this->_em->getRepository($this->class)->findAll();
 	}
 }

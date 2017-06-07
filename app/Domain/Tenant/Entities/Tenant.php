@@ -22,9 +22,35 @@ class Tenant
 	private $subDomain;
 
 	/**
+	 * @var
+	 */
+	private $aliasDomain;
+
+	/**
+	 * @var
+	 */
+	private $connection;
+
+	/**
+	 * @var
+	 */
+	private $meta;
+
+	/**
 	 * @var string
 	 */
-	private $tenantDatabase;
+	private $database;
+
+	/**
+	 * @var \DateTime
+	 */
+	private $createdAt = 'CURRENT_TIMESTAMP';
+
+	/**
+	 * @var \DateTime
+	 */
+	private $updatedAt = 'CURRENT_TIMESTAMP';
+
 	#endregion
 
 	#region constructor
@@ -32,11 +58,19 @@ class Tenant
 	 * Tenant constructor.
 	 * @param $data
 	 */
-	public function __construct($data)
+	public function __construct($data = null)
 	{
-		$this->id 				= isset($data['id']) ? $data['id'] : null;
-		$this->subDomain 		= isset($data['sub_domain']) ? $data['sub_domain'] : null;
-		$this->tenantDatabase 	= isset($data['tenant_database']) ? $data['tenant_database'] : null;
+		$this->setConnection(config('app.database.default'));
+
+		if (count($data)>0)
+		{
+			$this->id 				= isset($data['id']) ? $data['id'] : null;
+			$this->subDomain 		= isset($data['sub_domain']) ? $data['sub_domain'] : null;
+			$this->aliasDomain 		= isset($data['alias_domain']) ? $data['alias_domain'] : null;
+			$this->meta 			= isset($data['meta']) ? $data['meta'] : null;
+			$this->database 	= isset($data['tenant_database']) ? $data['tenant_database'] : null;
+
+		}
 	}
 	#endregion
 
@@ -56,12 +90,37 @@ class Tenant
 	{
 		$this->subDomain = $subDomain;
 	}
+
+	/**
+	 * @param string $aliasDomain
+	 */
+	public function setAliasDomain($aliasDomain)
+	{
+		$this->aliasDomain = $aliasDomain;
+	}
+
+	/**
+	 * @param string $connection
+	 */
+	public function setConnection($connection)
+	{
+		$this->connection = $connection;
+	}
+
+	/**
+	 * @param string $meta
+	 */
+	public function setMeta($meta)
+	{
+		$this->meta = $meta;
+	}
+
 	/**
 	 * @param string $db
 	 */
 	public function setTenantDatabase($db)
 	{
-		$this->tenantDatabase = $db;
+		$this->database = $db;
 	}
 	#endregion
 
@@ -85,9 +144,33 @@ class Tenant
 	/**
 	 * @return null|string
 	 */
+	public function getAliasDomain()
+	{
+		return $this->aliasDomain;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getConnection()
+	{
+		return $this->connection;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getMeta()
+	{
+		return $this->meta;
+	}
+
+	/**
+	 * @return null|string
+	 */
 	public function getTenantDatabase()
 	{
-		return $this->tenantDatabase;
+		return $this->database;
 	}
 	#endregion
 

@@ -53,7 +53,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-	'manual_tenants' => ['GR'=>'gr', 'UK'=>'uk', 'US'=>'us'],
+	'manual_tenants' => [env('DOMAIN_NAME') => '', 'GR'=>'gr', 'UK'=>'uk', 'US'=>'us'],
 
 //	'url' => env('GR_DOMAIN', 'http://localhost'),
 //
@@ -182,12 +182,12 @@ return [
          */
         App\Application\Providers\AppServiceProvider::class,
         App\Application\Providers\AuthServiceProvider::class,
-		App\Interfaces\Web\Http\Providers\UserServiceProvider::class,
-		App\Interfaces\Web\Http\Providers\TenantServiceProvider::class,
 		App\Application\Providers\MediaServiceProvider::class,
         App\Application\Providers\BroadcastServiceProvider::class,
         App\Application\Providers\EventServiceProvider::class,
 		App\Interfaces\Web\Http\Providers\RouteServiceProvider::class,
+		App\Interfaces\Web\Http\Providers\TenantServiceProvider::class,
+		App\Interfaces\Web\Http\Providers\UserServiceProvider::class,
 
 		Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 		LaravelDoctrine\ORM\DoctrineServiceProvider::class,
