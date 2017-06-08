@@ -18,6 +18,9 @@ use App\Domain\Tenant\Events\TenantResolvedEvent;
 use App\Domain\Tenant\Events\TenantNotResolvedEvent;
 use App\Domain\Tenant\Exceptions\TenantNotResolvedException;
 use App\Domain\Tenant\Exceptions\TenantDatabaseNameEmptyException;
+use Doctrine\ORM\EntityManagerInterface;
+use LaravelDoctrine\ORM\IlluminateRegistry;
+use Doctrine\ORM\EntityManager;
 
 
 
@@ -236,6 +239,13 @@ class TenantResolveService
 			//config()->set('tenant', $activeTenant->toArray());
 			$this->app['db']->purge($this->defaultConnection);
 		}
+
+		$this->app['em'] = $this->app['registry']->getManager($activeTenant->getSubDomain());
+		$this->app['registry']->setDefaultManager($activeTenant->getSubDomain());
+		$this->app['registry']->setDefaultConnection($activeTenant->getSubDomain());
+
+//		/** @var EntityManagerInterface $em */
+//		$em = $this->app['registry']->getManager($activeTenant->getSubDomain());
 
 		$this->app['db']->setDefaultConnection($connection);
 	}
