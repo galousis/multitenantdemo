@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Connection;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
@@ -19,13 +20,19 @@ class DestinationsTableSeeder extends Seeder
 
 		$faker = Faker\Factory::create();
 
-		$input = array("US", "UK", "GR");
+		/** @var Connection $connection */
+		$connection = Schema::getConnection();
+
+		$dbName = $connection->getDatabaseName();
+
+		$prefixLength 	= strlen(env('DB_NAME_PREFIX'));
+		$dbNameStart 	= substr($dbName, 0, $prefixLength);
 
 		for ($x = 0; $x <= 10; $x++) {
 
 			DB::table('destinations')->insert([
 				'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-				'country' => $input[rand( 0 , 2)],
+				'country' => $dbNameStart,
 				'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
 				'lat' => $faker->latitude,
 				'lng' => $faker->longitude,

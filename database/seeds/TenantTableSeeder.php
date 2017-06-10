@@ -14,51 +14,39 @@ class TenantTableSeeder extends Seeder
     public function run()
     {
 
-		/** @var Connection $connection */
-		$connection = Schema::getConnection();
+		$dbNames = DB::select('show databases;');
 
-		$db_name = $connection->getDatabaseName();
-
-		if($db_name == env('DB_DATABASE'))
+		foreach ($dbNames as $dbName)
 		{
-			//Truncate the tenants table
-			DB::table('tenants')->truncate();
 
-			$tenants = Config::get('app.manual_tenants');
-
-			if ($tenants >0)
+			if ($dbName == env('DOMAIN_NAME'))
 			{
-				foreach ($tenants as $key => $tenant) {
-
-					if ($key == env('DOMAIN_NAME'))
-					{
-						DB::table('tenants')->insert([
-							'sub_domain' => env('APP_NAME'),
-							'alias_domain' => env('APP_NAME'),
-							'connection' => 'mysql',
-							'meta' => '',
-							'database' 	 => env('APP_NAME'),
-							'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-							'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-						]);
-					}else
-					{
-						DB::table('tenants')->insert([
-							'sub_domain' => $tenants[$key],
-							'alias_domain' => $tenants[$key],
-							'connection' => 'tenant_db',
-							'meta' => '',
-							'database' 	 => env('APP_NAME').'_'.$key,
-							'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-							'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-						]);
-					}
-
-
-				}
+				DB::table('tenants')->insert([
+					'sub_domain' => env('APP_NAME'),
+					'alias_domain' => env('APP_NAME'),
+					'connection' => 'mysql',
+					'meta' => '',
+					'database' 	 => $dbName,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+					'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+				]);
 			}
+			else
+			{
 
+				$prefixLength 	= strlen(env('DB_NAME_PREFIX'));
+				$dbNameStart 	= substr($dbName, 0, $prefixLength);
+
+				DB::table('tenants')->insert([
+					'sub_domain' => strtolower($dbNameStart),
+					'alias_domain' => strtolower($dbNameStart),
+					'connection' => 'tenant_db',
+					'meta' => '',
+					'database' 	 => $dbName,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+					'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+				]);
+			}
 		}
-
 	}
 }

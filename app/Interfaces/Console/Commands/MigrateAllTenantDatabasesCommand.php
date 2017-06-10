@@ -20,7 +20,7 @@ class MigrateAllTenantDatabasesCommand extends Command {
 	 * The name and signature of the console command.
 	 * @var string
 	 */
-	protected $signature = 'migrate:tenant:all';
+	protected $signature = 'migrate:tenant:all {connection-name} {database-prefix}';
 
 	/**
 	 * The console command description.
@@ -46,16 +46,16 @@ class MigrateAllTenantDatabasesCommand extends Command {
 
 		foreach ($tenantDbNames as $tenantDbName)
 		{
-			try {
-
-				$this->call ('migrate:tenant:install',['connection-name' => $connectionName,'database-name' => $tenantDbName,]);
-
-			}
-			catch (QueryException $e) {
-				if($e->getCode() != '42S01')
-					throw $e;
-				$this -> info ('Migration table already created.');
-			}
+//			try {
+//
+//				$this->call ('migrate:tenant:install',['connection-name' => $connectionName,'database-name' => $tenantDbName,]);
+//
+//			}
+//			catch (QueryException $e) {
+//				if($e->getCode() != '42S01')
+//					throw $e;
+//				$this -> info ('Migration table already created.');
+//			}
 
 			try {
 

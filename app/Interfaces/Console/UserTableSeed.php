@@ -46,28 +46,28 @@ class UserTableSeed extends Command
 	public function handle()
 	{
 
-		$tenants = Config::get('app.manual_tenants');
-
-		if (count($tenants) >0)
-		{
-			foreach ($tenants as $key => $tenant) {
-
-				if ($key != env('DOMAIN_NAME'))
-				{
-
-					$this->call('migrate', [
-						'--path' => '../../database/migrations/2014_10_12_000000_create_users_table.php',
-					]);
-
-					$this->call('db:seed', [
-						'--class' => 'UsersTableSeeder',
-						'--database' => $key.'_mysql'
-					]);
-				}
-
-
-			}
-		}
+//		$tenants = Config::get('app.manual_tenants');
+//
+//		if (count($tenants) >0)
+//		{
+//			foreach ($tenants as $key => $tenant) {
+//
+//				if ($key != env('DOMAIN_NAME'))
+//				{
+//
+//					$this->call('migrate', [
+//						'--path' => '../../database/migrations/2014_10_12_000000_create_users_table.php',
+//					]);
+//
+//					$this->call('db:seed', [
+//						'--class' => 'UsersTableSeeder',
+//						'--database' => $key.'_mysql'
+//					]);
+//				}
+//
+//
+//			}
+//		}
 
 
 	}

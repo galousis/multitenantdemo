@@ -19,7 +19,7 @@ class MigrateTenantDabataseCommand extends Command {
 	 * The name and signature of the console command.
 	 * @var string
 	 */
-	protected $signature = 'migrate:tenant';
+	protected $signature = 'migrate:tenant {connection-name} {database-name}';
 
 	/**
 	 * The console command description.

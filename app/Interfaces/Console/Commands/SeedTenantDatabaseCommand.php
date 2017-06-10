@@ -19,7 +19,7 @@ class SeedTenantDatabaseCommand extends Command {
 	 * The name and signature of the console command.
 	 * @var string
 	 */
-	protected $signature = 'db:tenant:seed';
+	protected $signature = 'db:tenant:seed {connection-name} {database-name}';
 
 	/**
 	 * The console command description.
@@ -51,14 +51,30 @@ class SeedTenantDatabaseCommand extends Command {
 	{
 		$connectionName = $this->argument('connection-name');
 		$databaseName 	= $this->argument('database-name');
-		$className 		= $this->option('class');
+//		$className 		= $this->option('class');
 
-		Config::set('database.connections.'.$connectionName.'.database', $databaseName);
-		$connection = DB::reconnect($connectionName);
 		DB::setDefaultConnection($connectionName);
 
-		$this->info('Seeding tenant database "'.$databaseName.'"...');
-		$this->call('db:seed',['--class' => $className,]);
+		$tenantDbNames = $this->getTenantDbNames(env('DB_NAME_PREFIX'));
+
+		foreach ($tenantDbNames as $tenantDbName)
+		{
+//			Config::set('database.connections.'.$connectionName.'.database', $tenantDbName);
+//			$connection = DB::reconnect($connectionName);
+//			DB::setDefaultConnection($connectionName);
+
+			try {
+
+				$this->info('Seeding tenant database "'.$tenantDbName.'"... "'.$connectionName.'"  ');
+				$this->call('db:seed',['--database' => 'tenant_db']);
+
+			}
+			catch(\Exception $e) {
+				echo $e -> getMessage().PHP_EOL;
+			}
+
+			$this -> info (PHP_EOL);
+		}
 	}
 
 	/**
@@ -84,6 +100,29 @@ class SeedTenantDatabaseCommand extends Command {
 		return array(
 			array('class', null, InputOption::VALUE_REQUIRED, 'Seeder class name.', null),
 		);
+	}
+
+	/**
+	 * @param $prefix
+	 * @return array
+	 */
+	private function getTenantDbNames($prefix){
+
+		$prefixLength = strlen($prefix);
+
+		$dbNames = DB::select('show databases;');
+
+		$tenantDbNames = [];
+
+		foreach ($dbNames as $dbName)
+		{
+			$dbNameStart = substr($dbName->Database, 0, $prefixLength);
+
+			if($dbNameStart === $prefix) {
+				$tenantDbNames[] = $dbName->Database;
+			}
+		}
+		return $tenantDbNames;
 	}
 	#endregion
 }
