@@ -18,19 +18,43 @@
                         label="ID"
                         prop="id"
                         sortable
-                        width="180">
+                        width="80">
                     <template scope="scope">
                         <span style="margin-left: 10px">{{ scope.row.id}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="Name"
-                        width="180">
+                        label="Code"
+                        width="80">
                     <template scope="scope">
                         <el-popover trigger="hover" placement="top">
-                            <p>Name: {{ scope.row.name }}</p>
+                            <p>Code: {{ scope.row.tour_code }}</p>
                             <div slot="reference" class="name-wrapper">
-                                <el-tag>{{ scope.row.name }}</el-tag>
+                                <el-tag>{{ scope.row.tour_code}}</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="Title"
+                        width="250">
+                    <template scope="scope">
+                        <el-popover trigger="hover" placement="top">
+                            <p>Title: {{ scope.row.title}}</p>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag>{{ scope.row.title}}</el-tag>
+                            </div>
+                        </el-popover>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        label="Destinations"
+                        width="600">
+                    <template scope="scope">
+                        <el-popover trigger="hover" placement="top">
+                            <p>Title: {{ scope.row.destinations}}</p>
+                            <div slot="reference" class="name-wrapper">
+                                <el-tag>{{ scope.row.destinations}}</el-tag>
                             </div>
                         </el-popover>
                     </template>

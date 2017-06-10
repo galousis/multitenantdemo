@@ -173,6 +173,14 @@ class Tour
 	}
 
 	/**
+	 * @return ArrayCollection
+	 */
+	public function getDestination()
+	{
+		return $this->destinations;
+	}
+
+	/**
 	 * @return \DateTime
 	 */
 	public function getCreatedAt()

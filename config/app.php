@@ -195,7 +195,7 @@ return [
 
 		Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
 		Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
-		//Spatie\MediaLibrary\MediaLibraryServiceProvider::class
+		App\Infrastructure\Application\Tenant\Migrations\TenantMigrateServiceProvider::class
     ],
 
     /*

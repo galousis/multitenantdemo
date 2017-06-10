@@ -221,9 +221,9 @@ class TenantResolveService
 	 */
 	protected function setDefaultConnection(Tenant $activeTenant)
 	{
-		$hasConnection = ! empty($activeTenant->getConnection());
-		$connection = $hasConnection ? $activeTenant->getConnection() : $this->tenantConnection;
-		$databaseName = ($hasConnection && ! empty($activeTenant->getTenantDatabase())) ? $activeTenant->getTenantDatabase() : '';
+		$hasConnection 	= ! empty($activeTenant->getConnection());
+		$connection 	= $hasConnection ? $activeTenant->getConnection() : $this->tenantConnection;
+		$databaseName 	= ($hasConnection && ! empty($activeTenant->getTenantDatabase())) ? $activeTenant->getTenantDatabase() : '';
 		$databasePrefix = ($hasConnection && ! empty($activeTenant->getSubDomain())) ? config()->get('database.connections.' . $connection . '.database_prefix') : '';
 
 		if ($hasConnection && empty($activeTenant->getSubDomain()))
@@ -231,23 +231,41 @@ class TenantResolveService
 			throw new TenantDatabaseNameEmptyException();
 		}
 
+		#region Default laravel DatabaseManager
 		config()->set('database.default', $connection);
 		config()->set('database.connections.' . $connection . '.database', $databasePrefix . $databaseName);
 
 		if ($hasConnection)
 		{
-			//config()->set('tenant', $activeTenant->toArray());
 			$this->app['db']->purge($this->defaultConnection);
 		}
 
-		$this->app['em'] = $this->app['registry']->getManager($activeTenant->getSubDomain());
+		$this->app['db']->setDefaultConnection($connection);
+		#endregion
+
+		#region Doctrine
+		if (!$this->app['registry']->managerExists($activeTenant->getSubDomain()))
+		{
+			// Prepare settings, grab them from doctrine conf so we get the Fluent mappings too.
+			$settings = \Config::get('doctrine.managers.default');
+			// Ooops set the tenant_db as connection, otherwise nana will work properly bellow
+			$settings['connection'] = $activeTenant->getConnection();
+
+			// Now we need to add the dynamic manager (does not exists in doctrine config file)
+			// into conatiner's registry (IlluminateRegistry), adds the connection too for us !
+			$this->app['registry']->addManager($activeTenant->getSubDomain(), $settings );
+		}
+
+		// Set defaults
 		$this->app['registry']->setDefaultManager($activeTenant->getSubDomain());
 		$this->app['registry']->setDefaultConnection($activeTenant->getSubDomain());
 
-//		/** @var EntityManagerInterface $em */
-//		$em = $this->app['registry']->getManager($activeTenant->getSubDomain());
+		// Now all the magic is done right here, we reset into conatiner the new proper "em" (EntityManager)
+		$this->app['em'] = $this->app['registry']->getManager($activeTenant->getSubDomain());
+		#endregion
 
-		$this->app['db']->setDefaultConnection($connection);
+
+
 	}
 
 	/**

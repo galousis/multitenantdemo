@@ -2,6 +2,7 @@
 namespace App\Interfaces\Api\Http\Controllers;
 
 use App\Application\Services\Tour\Access\GetToursService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use App\Domain\Tour\Entities\Tour;
@@ -76,16 +77,38 @@ class TourController extends ApiController
 		/** @var LengthAwarePaginator $allTours */
 		$allTours = $this->getToursService->execute($request);
 
-
-		$allTours = $allTours->toArray();
-
-		$data = $allTours['data'];
+		//TODO all bellow to move them to getTourService to slim this controller
+		$allTours 	= $allTours->toArray();
+		$data 		= $allTours['data'];
 
 		foreach ($allTours['data'] as $key => $value)
 		{
+			//Initations
+			$destinationsString = '';
+			$keyed = new Collection();
+
 			/** @var Tour $tour */
 			$tour = $value;
-			$allTours['data'][$key] = array('id'=>$tour->getId(), 'name'=>$tour->getTourCode());
+
+			/** @var ArrayCollection $destinations */
+			$destinations = $tour->getDestination();
+
+			if ($destinations->count()>0)
+			{
+				$elements = $destinations->toArray();
+				$destinations = new Collection($elements);
+
+				$keyed = $destinations->mapWithKeys(function ($item) {
+					return [$item->getTitle() => $item->getLat().'-'.$item->getLng()];
+				});
+
+				foreach ($keyed as $k => $v)
+					$destinationsString .= 'Title : '.$k.' coordinates : '.$v.', ';
+
+				$destinationsString = rtrim($destinationsString,",");
+			}
+
+			$allTours['data'][$key] = array('id'=>$tour->getId(), 'tour_code'=>$tour->getTourCode(), 'title'=>$tour->getTitle(), 'destinations'=>$destinationsString);
 		}
 
 		return $allTours;
