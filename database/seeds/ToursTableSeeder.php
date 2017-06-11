@@ -13,30 +13,35 @@ class ToursTableSeeder extends Seeder
 	 */
 	public function run()
 	{
-		//Drop the destinations table
-		DB::table('tours')->delete();
+		$curentDBName = Config::get('database.connections.'.Config::get('database.default').'.database');
 
-		$faker = Faker\Factory::create();
+		if ($curentDBName != env('DOMAIN_NAME')) // Seed only tenants not master
+		{
+//			//Drop the destinations table
+//			DB::table('tours')->truncate();
 
-		for ($x = 0; $x <= 10; $x++) {
+			$faker = Faker\Factory::create();
+
+			for ($x = 0; $x <= 10; $x++) {
 
 
-			$hashids 	= new Hashids('this is my constant salt', 5,'abcdefghijklmnpqrstuvwxyz0123456789');
-			$hash 		= $hashids->encode($x);
+				$hashids = new Hashids('this is my constant salt', 5, 'abcdefghijklmnpqrstuvwxyz0123456789');
+				$hash = $hashids->encode($x);
 
-			$int	= mt_rand(1496348415,1498854015);
-			$date 	= date("Y-m-d H:i:s",$int);
+				$int = mt_rand(1496348415, 1498854015);
+				$date = date("Y-m-d H:i:s", $int);
 
-			DB::table('tours')->insert([
-				'tour_code' => $hash,
-				'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-				'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
-//				'departure' => Carbon::createFromDate(2017, 6, 15, \DateTimeZone::EUROPE),
-				'departure' => $date,
-				'duration' => rand( 1 , 4),
-				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-				'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-			]);
+				DB::table('tours')->insert([
+					'tour_code' => $hash,
+					'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+					'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
+					//				'departure' => Carbon::createFromDate(2017, 6, 15, \DateTimeZone::EUROPE),
+					'departure' => $date,
+					'duration' => rand(1, 4),
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+					'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+				]);
+			}
 		}
 	}
 }

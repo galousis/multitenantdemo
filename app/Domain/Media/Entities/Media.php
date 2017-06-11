@@ -7,6 +7,7 @@ use App\Infrastructure\Media\Conversion\Conversion;
 use App\Infrastructure\Media\Conversion\ConversionCollection;
 use App\Infrastructure\Media\UrlGenerator\UrlGeneratorFactory;
 use App\Infrastructure\Media\SortableTrait;
+use App\Infrastructure\Media\Exceptions\InvalidConversion;
 
 class Media
 {
@@ -268,7 +269,7 @@ class Media
 	 *
 	 * @return string
 	 *
-	 * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
+	 * @throws InvalidConversion
 	 */
 	public function getFullUrl(string $conversionName = ''): string
 	{
@@ -282,7 +283,7 @@ class Media
 	 *
 	 * @return string
 	 *
-	 * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
+	 * @throws InvalidConversion
 	 */
 	public function getUrl(string $conversionName = ''): string
 	{
@@ -304,7 +305,7 @@ class Media
 	 *
 	 * @return string
 	 *
-	 * @throws \Spatie\MediaLibrary\Exceptions\InvalidConversion
+	 * @throws InvalidConversion
 	 */
 	public function getPath(string $conversionName = ''): string
 	{

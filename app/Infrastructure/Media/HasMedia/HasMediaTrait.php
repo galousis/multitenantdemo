@@ -29,33 +29,33 @@ trait HasMediaTrait
     /** @var array */
     protected $unAttachedMediaLibraryItems = [];
 
-    public static function bootHasMediaTrait()
-    {
-        static::deleted(function (HasMedia $entity) {
-            if ($entity->shouldDeletePreservingMedia()) {
-                return;
-            }
-
-            $entity->media()->get()->each->delete();
-        });
-    }
-
-    /**
-     * Set the polymorphic relation.
-     *
-     * @return mixed
-     */
-    public function media()
-    {
-        return $this->morphMany(config('medialibrary.media_model'), 'model');
-    }
+//    public static function bootHasMediaTrait()
+//    {
+//        static::deleted(function (HasMedia $entity) {
+//            if ($entity->shouldDeletePreservingMedia()) {
+//                return;
+//            }
+//
+//            $entity->media()->get()->each->delete();
+//        });
+//    }
+//
+//    /**
+//     * Set the polymorphic relation.
+//     *
+//     * @return mixed
+//     */
+//    public function media()
+//    {
+//        return $this->morphMany(config('medialibrary.media_model'), 'model');
+//    }
 
     /**
      * Add a file to the medialibrary.
      *
      * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
-     * @return \Spatie\MediaLibrary\FileAdder\FileAdder
+     * @return FileAdder
      */
     public function addMedia($file)
     {
@@ -67,7 +67,7 @@ trait HasMediaTrait
      *
      * @param string $key
      *
-     * @return \Spatie\MediaLibrary\FileAdder\FileAdder
+     * @return FileAdder
      */
     public function addMediaFromRequest(string $key)
     {
@@ -131,9 +131,9 @@ trait HasMediaTrait
      * @param string|array ...$allowedMimeTypes
      *
      * @throws InvalidBase64Data
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     * @throws \App\Infrastructure\Media\Exceptions\FileCannotBeAdded
      *
-     * @return \Spatie\MediaLibrary\FileAdder\FileAdder
+     * @return FileAdder
      */
     public function addMediaFromBase64(string $base64data, ...$allowedMimeTypes)
     {
@@ -172,7 +172,7 @@ trait HasMediaTrait
      *
      * @param string|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      *
-     * @return \Spatie\MediaLibrary\FileAdder\FileAdder
+     * @return FileAdder
      */
     public function copyMedia($file)
     {
@@ -401,7 +401,7 @@ trait HasMediaTrait
     /**
      * Determines if the media files should be preserved when the media object gets deleted.
      *
-     * @return \Spatie\MediaLibrary\Media
+     * @return Media
      */
     public function shouldDeletePreservingMedia()
     {

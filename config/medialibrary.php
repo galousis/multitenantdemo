@@ -6,7 +6,7 @@ return [
      * The filesystems on which to store added files and derived images by default. Choose
      * one or more of the filesystems you configured in app/config/filesystems.php
      */
-    'defaultFilesystem' => 'media',
+    'defaultFilesystem' => 'local-media',
 
     /*
      * The maximum file size of an item in bytes. Adding a file
@@ -70,10 +70,10 @@ return [
      * These generators will be used to created conversion of media files.
      */
     'image_generators' => [
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Image::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Pdf::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Svg::class,
-        Spatie\MediaLibrary\ImageGenerators\FileTypes\Video::class,
+		App\Infrastructure\Media\ImageGenerators\FileTypes\Image::class,
+		App\Infrastructure\Media\ImageGenerators\FileTypes\Pdf::class,
+		App\Infrastructure\Media\ImageGenerators\FileTypes\Svg::class,
+		App\Infrastructure\Media\ImageGenerators\FileTypes\Video::class,
     ],
 
     /*

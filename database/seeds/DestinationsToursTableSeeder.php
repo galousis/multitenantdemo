@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Query\Builder;
 use Carbon\Carbon;
 use Hashids\Hashids;
 
@@ -13,27 +14,49 @@ class DestinationsToursTableSeeder extends Seeder
 	 */
 	public function run()
 	{
-		//Drop the destinations table
-		DB::table('destinations_tours')->delete();
+		$curentDBName = Config::get('database.connections.'.Config::get('database.default').'.database');
 
-		$faker = Faker\Factory::create();
+		if ($curentDBName != env('DOMAIN_NAME')) // Seed only tenants not master
+		{
+//			//Drop the destinations table
+//			DB::table('destinations_tours')->truncate();
 
-		for ($x = 0; $x <= 10; $x++) {
+			for ($x = 0; $x <= 10; $x++) {
+				$this->checkIntegrity();
+			}
+		}
+	}
 
-			$tourIds = DB::table('tours')->select('id')->get()->all();
+	/**
+	 * Reccursion to check for dublicate entries
+	 */
+	protected function checkIntegrity()
+	{
+		$tourIds = DB::table('tours')->select('id')->get()->all();
+		shuffle($tourIds);
+		$destIds = DB::table('destinations')->select('id')->get()->all();
+		shuffle($destIds);
 
-			$destIds = DB::table('destinations')->select('id')->get()->all();
+		$destIdsKey = array_rand($tourIds, 1);
+		$tourIdsKey = array_rand($destIds, 1);
 
-			$destIdsKey = array_rand($destIds, 1);
-
-			$tourIdsKey = array_rand($tourIds, 1);
-
-
-			DB::table('destinations_tours')->insert([
-				'destination_id' => $destIds[$destIdsKey]->id,
-				'tour_id' => $tourIds[$tourIdsKey]->id
+		/** @var Builder $result */
+		$result = DB::table('destinations_tours')
+			->where([
+				['destination_id', '=', $destIds[$destIdsKey]->id],
+				['tour_id', '=', $tourIds[$tourIdsKey]->id]
 			]);
 
+		if ($result->get()->count() != 0)
+		{
+			$this->checkIntegrity();
+		}
+		else
+			{
+				DB::table('destinations_tours')->insert([
+					'destination_id' => $destIds[$destIdsKey]->id,
+					'tour_id' => $tourIds[$tourIdsKey]->id
+				]);
 
 		}
 	}

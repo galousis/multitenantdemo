@@ -7,12 +7,12 @@ namespace App\Infrastructure\Media\HasMedia\Interfaces;
  */
 interface HasMedia
 {
-    /**
-     * Set the polymorphic relation.
-     *
-     * @return mixed
-     */
-    public function media();
+//    /**
+//     * Set the polymorphic relation.
+//     *
+//     * @return mixed
+//     */
+//    public function media();
 
     /**
      * Move a file to the medialibrary.

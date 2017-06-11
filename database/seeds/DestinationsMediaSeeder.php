@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 
 use App\Domain\Destination\Contracts\DestinationRepositoryContract;
 use App\Domain\Destination\Entities\Destination;
+use LaravelDoctrine\ORM\IlluminateRegistry;
+use App\Infrastructure\Doctrine\Repositories\DestinationRepository;
 
 class DestinationsMediaSeeder extends Seeder
 {
@@ -14,31 +16,72 @@ class DestinationsMediaSeeder extends Seeder
 	 */
 	public function run()
 	{
-		//DB::table('media')->truncate();
+		$curentDBName = Config::get('database.connections.'.Config::get('database.default').'.database');
 
-		$faker = Faker\Factory::create();
+		if ($curentDBName != env('DOMAIN_NAME')) // Seed only tenants not master
+		{
+			DB::table('media')->truncate();
 
-		/** @var DestinationRepositoryContract $destRepo */
-		$destRepo = app()->make('App\Domain\Destination\Contracts\DestinationRepositoryContract');
+			$faker = Faker\Factory::create();
 
-		$allDest = $destRepo->findAll();
+			//TODO will call TenantResolveService to do resolve from cli with registerTenantConsoleArgument (app running in console)
+			//TODO for the moment leave it as below
 
-		foreach ($allDest as $dest) {
+			#region Doctrine
+			/** @var IlluminateRegistry $registry */
+			$registry = app()->make('registry');
 
-			/** @var Destination $destination */
-			$destination = $dest;
+			$subDomain = strtolower(explode('_', $curentDBName)[1]);
 
-			$counter = 0;
-			// max retries = 5 because sometimes faker return false
-			while (!($fakeImage = $faker->image(null, 600, 400)) && ($counter < 5)) {
-				$counter++;
+			if (!$registry->managerExists($subDomain))
+			{
+				// Prepare settings, grab them from doctrine conf so we get the Fluent mappings too.
+				$settings = Config::get('doctrine.managers.default');
+				// Ooops set the tenant_db as connection, otherwise nana will work properly bellow
+				$settings['connection'] = Config::get('database.default');
+
+				// Now we need to add the dynamic manager (does not exists in doctrine config file)
+				// into conatiner's registry (IlluminateRegistry), adds the connection too for us !
+				$registry->addManager($subDomain, $settings );
 			}
 
-			if ($fakeImage !== false) {
-				$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local');
+			// Set defaults
+			$registry->setDefaultManager($subDomain);
+			$registry->setDefaultConnection($subDomain);
+			#endregion
+
+
+			$result = DB::table('destinations')->get(['id']);
+
+			if ($result->count() > 0)
+			{
+				/** @var DestinationRepository $destRepo */
+				$destRepo = new DestinationRepository($registry->getManager($subDomain));
 			}
 
+
+			$allDest = $destRepo->findAll();
+
+			foreach ($allDest as $dest) {
+
+				/** @var Destination $destination */
+				$destination = $dest;
+
+
+				$counter = 0;
+				// max retries = 5 because sometimes faker return false
+				while (!($fakeImage = $faker->image(null, 600, 400)) && ($counter < 5)) {
+					$counter++;
+				}
+
+				if ($fakeImage !== false) {
+
+					$mediaRepo = new \App\Infrastructure\Doctrine\Repositories\MediaRepository($registry->getManager($subDomain));
+
+					$destination->addMedia($fakeImage)->preservingOriginal()->toMediaCollection('featured', 'local', $mediaRepo);
+				}
+
+			}
 		}
-
 	}
 }

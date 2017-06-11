@@ -15,30 +15,35 @@ class DestinationsTableSeeder extends Seeder
      */
     public function run()
     {
-		//Drop the destinations table
-		DB::table('destinations')->delete();
+		$curentDBName = Config::get('database.connections.'.Config::get('database.default').'.database');
 
-		$faker = Faker\Factory::create();
+		if ($curentDBName != env('DOMAIN_NAME')) // Seed only tenants not master
+		{
+//			//Drop the destinations table
+//			DB::table('destinations')->truncate();
 
-		/** @var Connection $connection */
-		$connection = Schema::getConnection();
+			$faker = Faker\Factory::create();
 
-		$dbName = $connection->getDatabaseName();
+			/** @var Connection $connection */
+			$connection = Schema::getConnection();
 
-		$prefixLength 	= strlen(env('DB_NAME_PREFIX'));
-		$dbNameStart 	= substr($dbName, 0, $prefixLength);
+			$dbName = $connection->getDatabaseName();
 
-		for ($x = 0; $x <= 10; $x++) {
+			$prefixLength = strlen(env('DB_NAME_PREFIX'));
+			$dbNameStart = substr($dbName, $prefixLength, 2);
 
-			DB::table('destinations')->insert([
-				'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
-				'country' => $dbNameStart,
-				'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
-				'lat' => $faker->latitude,
-				'lng' => $faker->longitude,
-				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-				'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-			]);
+			for ($x = 0; $x <= 10; $x++) {
+
+				DB::table('destinations')->insert([
+					'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+					'country' => $dbNameStart,
+					'description' => $faker->paragraph($nbSentences = 6, $variableNbSentences = true),
+					'lat' => $faker->latitude,
+					'lng' => $faker->longitude,
+					'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+					'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+				]);
+			}
 		}
     }
 }

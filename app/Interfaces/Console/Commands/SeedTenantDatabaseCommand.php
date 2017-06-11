@@ -1,10 +1,11 @@
 <?php
 namespace App\Interfaces\Console\Commands;
 
-use Illuminate\Console\Command as Command;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption as InputOption;
 use Symfony\Component\Console\Input\InputArgument as InputArgument;
 use Config, DB;
+use LaravelDoctrine\ORM\IlluminateRegistry;
 
 /**
  * Class SeedTenantDatabaseCommand
@@ -19,7 +20,7 @@ class SeedTenantDatabaseCommand extends Command {
 	 * The name and signature of the console command.
 	 * @var string
 	 */
-	protected $signature = 'db:tenant:seed {connection-name} {database-name}';
+	protected $signature = 'db:tenant:seed {connection-name} {class}';
 
 	/**
 	 * The console command description.
@@ -50,8 +51,8 @@ class SeedTenantDatabaseCommand extends Command {
 	public function handle()
 	{
 		$connectionName = $this->argument('connection-name');
-		$databaseName 	= $this->argument('database-name');
-//		$className 		= $this->option('class');
+//		$databaseName 	= $this->argument('database-name');
+		$className 		= $this->argument('class');
 
 		DB::setDefaultConnection($connectionName);
 
@@ -59,14 +60,29 @@ class SeedTenantDatabaseCommand extends Command {
 
 		foreach ($tenantDbNames as $tenantDbName)
 		{
-//			Config::set('database.connections.'.$connectionName.'.database', $tenantDbName);
-//			$connection = DB::reconnect($connectionName);
-//			DB::setDefaultConnection($connectionName);
+//			Config::set('database.connections.tenant_db.database', $tenantDbName);
+//			DB::setDefaultConnection('tenant_db');
+//			DB::setDatabaseName($tenantDbName);
+//			DB::reconnect('tenant_db');
+
+			config()->set('database.default', 'tenant_db');
+			config()->set('database.connections.tenant_db.database', $tenantDbName);
+
+			DB::purge(DB::getDefaultConnection());
+			DB::setDefaultConnection('tenant_db');
 
 			try {
 
-				$this->info('Seeding tenant database "'.$tenantDbName.'"... "'.$connectionName.'"  ');
-				$this->call('db:seed',['--database' => 'tenant_db']);
+				$this -> info (PHP_EOL);
+				$this -> info (DB::getDatabaseName());
+				$this -> info (PHP_EOL);
+				$this -> info (DB::getDefaultConnection());
+				$this -> info (PHP_EOL);
+				$this -> info (Config::get('database.connections.tenant_db.database'));
+
+
+				$this->info('Seeding tenant database "'.$tenantDbName.'"...');
+				$this->call('db:seed',['--class' => $className, '--database' => 'tenant_db']);
 
 			}
 			catch(\Exception $e) {

@@ -5,6 +5,7 @@ namespace App\Infrastructure\Media\FileAdder;
 use App\Application\Services\Media\MediaService;
 use App\Domain\Media\Contracts\MediaRepositoryContract;
 use App\Domain\Media\Entities\Media;
+use App\Infrastructure\Doctrine\Repositories\MediaRepository;
 use App\Infrastructure\Media\Helpers\File;
 use App\Domain\Destination\Entities\Destination;
 use App\Infrastructure\Media\Filesystem\Filesystem;
@@ -246,16 +247,15 @@ class FileAdder
         return $this->toMediaCollection($collectionName, config('filesystems.cloud'));
     }
 
-    /**
-     * @param string $collectionName
-     * @param string $diskName
-     *
-     * @return Media
-     *
-     * @throws FileCannotBeAdded
-     * @throws FileCannotBeAdded
-     */
-    public function toMediaCollection(string $collectionName = 'default', string $diskName = '')
+	/**
+	 * @param string $collectionName
+	 * @param string $diskName
+	 * @param $mediaRepo
+	 * @return Media
+	 * @throws FileDoesNotExist
+	 * @throws FileIsTooBig
+	 */
+    public function toMediaCollection(string $collectionName = 'default', string $diskName = '', MediaRepository $mediaRepo = null)
     {
         if (! is_file($this->pathToFile)) {
             throw FileDoesNotExist::create($this->pathToFile);
@@ -287,14 +287,24 @@ class FileAdder
         $media->setCreatedAt(Carbon::now()->format('Y-m-d H:i:s'));
 		$media->setUpdatedAt(Carbon::now()->format('Y-m-d H:i:s'));
 
-        /** @var MediaRepositoryContract $repository */
-		$repository = $this->mediaService->getRepository();
+		if($mediaRepo instanceof MediaRepository)
+		{
+			#Save to DB
+			$mediaRepo->create($media);
+		}
+		else
+		{
+			/** @var MediaRepositoryContract $repository */
+			$repository = $this->mediaService->getRepository();
 
-		#Save to DB
-		$repository->create($media);
+			#Save to DB
+			$repository->create($media);
+
+		}
+
 
 		#Save to local disk
-        $this->attachMedia($media);
+        //$this->attachMedia($media);
 
         return $media;
     }
