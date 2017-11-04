@@ -1,4 +1,4 @@
-Backbone interview task demo app
+Multi tenant app
 
 
 ## Installation & Configuration
