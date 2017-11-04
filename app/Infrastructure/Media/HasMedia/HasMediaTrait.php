@@ -438,6 +438,11 @@ trait HasMediaTrait
             ->values();
     }
 
+	/**
+	 * @param Media $media
+	 * @param FileAdder $fileAdder
+	 *
+	 */
     public function prepareToAttachMedia(Media $media, FileAdder $fileAdder)
     {
         $this->unAttachedMediaLibraryItems[] = compact('media', 'fileAdder');
@@ -452,6 +457,11 @@ trait HasMediaTrait
         $this->unAttachedMediaLibraryItems = [];
     }
 
+	/**
+	 * @param string $file
+	 * @param array ...$allowedMimeTypes
+	 * @throws MimeTypeNotAllowed
+	 */
     protected function guardAgainstInvalidMimeType(string $file, ...$allowedMimeTypes)
     {
         $allowedMimeTypes = array_flatten($allowedMimeTypes);

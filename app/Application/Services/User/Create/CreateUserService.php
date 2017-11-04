@@ -1,6 +1,7 @@
 <?php
 namespace App\Application\Services\User\Create;
 
+use App\Application\Services\PasswordService;
 use App\Application\Services\ApplicationService;
 use App\Application\Services\DataTransformer\User\UserDataTransformer;
 use App\Domain\User\Entities\User;
@@ -25,20 +26,26 @@ class CreateUserService implements ApplicationService
 	private $userRepository;
 	/** @var UserDataTransformer  */
 	private $userDataTransformer;
+//	/** @var  PasswordService */
+//	private $passwordService;
 	#endregion
 
 	#region Constructor
 	/**
 	 * CreateUserService constructor.
+	 *
 	 * @param UserRepositoryContract $userRepository
 	 * @param UserDataTransformer $userDataTransformer
+	 * @param PasswordService $passwordService
 	 */
 	public function __construct(
 		UserRepositoryContract $userRepository,
 		UserDataTransformer $userDataTransformer
+//		PasswordService $passwordService
 	) {
 		$this->userRepository = $userRepository;
 		$this->userDataTransformer = $userDataTransformer;
+//		$this->passwordService = $passwordService;
 	}
 	#endregion
 
