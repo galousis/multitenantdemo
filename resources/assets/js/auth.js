@@ -72,6 +72,7 @@ function pretendRequest(email, pass, cb) {
             password: pass
         }).then((response) => {
 
+            response.data = jQuery.parseJSON( response.data );
             console.log(response.data.data.jwt);
 
             if (response.data.data.jwt) {

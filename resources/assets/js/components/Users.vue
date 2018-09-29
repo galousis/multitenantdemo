@@ -109,6 +109,8 @@
 
                 return this.$http.get(page_url).then((response) => {
 
+                    response.data = jQuery.parseJSON( response.data );
+
                     vm.tableData = response.data.data;
                     vm.paginationT = vm.makePagination(response.data);
 
