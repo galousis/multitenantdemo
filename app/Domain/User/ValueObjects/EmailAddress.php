@@ -11,7 +11,7 @@ class EmailAddress
 {
 	#region properties
 	/**
-	 * @var string
+	 * @var strings
 	 */
 	private $email;
 	#endregion
